@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>💬 CurhatYuk — Ngobrol Tanpa Batas</title>
 
-<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -18,8 +17,6 @@
     --primary: #6c9a8b;
     --primary-dark: #5a8576;
     --secondary: #d4a373;
-    --warm: #faedcd;
-    --accent: #e07a5f;
     --bubble-me: #e8f0ec;
     --bubble-other: #fff;
     --border: #e8e3dc;
@@ -38,307 +35,99 @@
     -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;
   }
-  .app {
-    width: 100%;
-    max-width: 480px;
-    min-height: 100vh;
-    background: var(--card);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 40px rgba(0,0,0,0.08);
-  }
+  .app { width: 100%; max-width: 480px; min-height: 100vh; background: var(--card); position: relative; overflow: hidden; box-shadow: 0 0 40px rgba(0,0,0,0.08); }
 
-  .app-header {
-    background: linear-gradient(135deg, #6c9a8b, #4a7a6a);
-    color: #fff;
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
+  .app-header { background: linear-gradient(135deg, #6c9a8b, #4a7a6a); color: #fff; padding: 14px 18px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; }
   .app-header .back { font-size: 22px; cursor: pointer; width: 30px; text-align: center; }
   .app-header .title { font-weight: 700; font-size: 16px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .app-header .action { font-size: 20px; cursor: pointer; padding: 6px 10px; border-radius: 8px; }
   .app-header .action:hover { background: rgba(255,255,255,0.15); }
-
   .screen { display: none; flex-direction: column; height: 100vh; }
   .screen.active { display: flex; }
 
-  /* ── Login ── */
-  .login-wrap {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    text-align: center;
-    background: linear-gradient(180deg, #f0ece7 0%, #f8f6f2 100%);
-  }
+  /* Login */
+  .login-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; background: linear-gradient(180deg, #f0ece7 0%, #f8f6f2 100%); }
   .login-wrap .logo { font-size: 64px; margin-bottom: 6px; }
-  .login-wrap h1 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
-  .login-wrap .tagline { font-size: 13px; color: var(--sub); margin-bottom: 26px; }
-  .input-group { width: 100%; max-width: 300px; margin-bottom: 14px; text-align: left; }
+  .login-wrap h1 { font-size: 28px; font-weight: 800; color: var(--text); }
+  .login-wrap .tagline { font-size: 13px; color: var(--sub); margin-bottom: 24px; }
+  .input-group { width: 100%; max-width: 300px; margin-bottom: 12px; text-align: left; }
   .input-group label { font-size: 12px; font-weight: 600; color: var(--sub); display: block; margin-bottom: 4px; }
-  .input-group input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    font-size: 15px;
-    font-family: inherit;
-    background: #fafaf8;
-    transition: border-color 0.2s;
-  }
+  .input-group input { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 12px; font-size: 15px; font-family: inherit; background: #fafaf8; transition: border-color 0.2s; }
   .input-group input:focus { outline: none; border-color: var(--primary); }
-  .btn {
-    padding: 12px 32px;
-    border-radius: 25px;
-    font-size: 14px;
-    font-weight: 700;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    width: 100%;
-    max-width: 300px;
-    transition: all 0.2s;
-    letter-spacing: 0.3px;
-  }
+  .btn { padding: 12px 32px; border-radius: 25px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; width: 100%; max-width: 300px; transition: all 0.2s; letter-spacing: 0.3px; }
   .btn-primary { background: var(--primary); color: #fff; }
   .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
   .btn-primary:disabled { background: #bbb; cursor: not-allowed; transform: none; }
   .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); margin-top: 8px; }
   .btn-outline:hover { background: var(--primary); color: #fff; }
+  .btn-danger { background: #e74c3c; color: #fff; margin-top: 8px; }
+  .btn-danger:hover { background: #c0392b; }
 
-  /* ── Topics ── */
+  /* Topics */
   .topics-wrap { flex: 1; overflow-y: auto; padding: 10px; }
   .topics-wrap h3 { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 1px; margin: 12px 6px 6px; }
-  .topic-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px;
-    background: #f9f7f4;
-    border-radius: 14px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: all 0.15s;
-    border: 1px solid transparent;
-  }
+  .topic-card { display: flex; align-items: center; gap: 12px; padding: 14px; background: #f9f7f4; border-radius: 14px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
   .topic-card:hover { background: #f0ece7; border-color: var(--border); }
-  .tc-icon {
-    width: 48px; height: 48px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-  }
+  .tc-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
   .tc-info { flex: 1; min-width: 0; }
   .tc-name { font-weight: 700; font-size: 15px; }
   .tc-desc { font-size: 12px; color: var(--sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tc-meta { text-align: right; flex-shrink: 0; }
   .tc-count { font-size: 11px; color: var(--sub); }
-  .tc-dot { display: inline-block; width: 8px; height: 8px; background: var(--online); border-radius: 50%; }
+  .tc-live { display: inline-block; width: 8px; height: 8px; background: var(--online); border-radius: 50%; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  /* ── Chat ── */
-  .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background: #f5f0ea;
-  }
-  .msg {
-    display: flex;
-    gap: 8px;
-    max-width: 88%;
-    animation: msgIn 0.25s ease;
-  }
-  @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  /* Chat */
+  .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; background: #f5f0ea; }
+  .msg { display: flex; gap: 8px; max-width: 88%; animation: msgIn 0.2s ease; }
+  @keyframes msgIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
   .msg.me { align-self: flex-end; flex-direction: row-reverse; }
-  .msg .avt {
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    flex-shrink: 0;
-    font-weight: 700;
-    color: #fff;
-  }
-  .msg .bbl {
-    padding: 10px 14px;
-    border-radius: 16px;
-    font-size: 14px;
-    line-height: 1.5;
-    word-break: break-word;
-    position: relative;
-  }
+  .msg .avt { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; font-weight: 700; color: #fff; }
+  .msg .bbl { padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.5; word-break: break-word; }
   .msg.me .bbl { background: var(--bubble-me); border-bottom-right-radius: 4px; }
   .msg.other .bbl { background: var(--bubble-other); border-bottom-left-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
   .msg .sdr { font-size: 11px; font-weight: 700; color: var(--secondary); margin-bottom: 2px; }
   .msg .tm { font-size: 10px; color: var(--sub); margin-top: 4px; text-align: right; }
   .msg .big-emoji { font-size: 42px; line-height: 1.2; }
-  .sys {
-    text-align: center;
-    font-size: 11px;
-    color: var(--sub);
-    padding: 6px;
-    font-style: italic;
-  }
+  .sys { text-align: center; font-size: 11px; color: var(--sub); padding: 6px; font-style: italic; }
 
-  .chat-input {
-    padding: 10px 14px;
-    background: #fff;
-    border-top: 1px solid var(--border);
-    display: flex;
-    gap: 8px;
-    align-items: flex-end;
-    position: sticky;
-    bottom: 0;
-    z-index: 100;
-  }
-  .chat-input textarea {
-    flex: 1;
-    border: none;
-    background: #f5f0ea;
-    border-radius: 20px;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-family: inherit;
-    resize: none;
-    max-height: 100px;
-    line-height: 1.4;
-  }
+  .chat-input { padding: 10px 14px; background: #fff; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; position: sticky; bottom: 0; z-index: 100; }
+  .chat-input textarea { flex: 1; border: none; background: #f5f0ea; border-radius: 20px; padding: 10px 16px; font-size: 14px; font-family: inherit; resize: none; max-height: 100px; line-height: 1.4; }
   .chat-input textarea:focus { outline: none; }
-  .chat-input .snd {
-    width: 42px; height: 42px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
+  .chat-input .snd { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: #fff; border: none; font-size: 18px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
   .chat-input .snd:hover { background: var(--primary-dark); }
-  .chat-input .snd:disabled { background: #ccc; cursor: default; }
+  .chat-input .snd:disabled { background: #ccc; cursor: default; transform: none; }
 
-  .online-bar {
-    display: flex;
-    gap: 6px;
-    padding: 8px 14px;
-    overflow-x: auto;
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-  }
-  .on-u {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    font-size: 10px;
-    color: var(--sub);
-    flex-shrink: 0;
-  }
-  .on-dot {
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    color: #fff;
-    font-weight: 700;
-    position: relative;
-  }
-  .on-dot::after {
-    content: '';
-    width: 10px; height: 10px;
-    background: var(--online);
-    border: 2px solid #fff;
-    border-radius: 50%;
-    position: absolute;
-    bottom: -1px; right: -1px;
-  }
+  .online-bar { display: flex; gap: 8px; padding: 8px 14px; overflow-x: auto; background: #fff; border-bottom: 1px solid var(--border); min-height: 48px; align-items: center; }
+  .online-bar .none { font-size: 11px; color: var(--sub); font-style: italic; }
+  .on-u { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: var(--sub); flex-shrink: 0; }
+  .on-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #fff; font-weight: 700; position: relative; }
+  .on-dot::after { content: ''; width: 9px; height: 9px; background: var(--online); border: 2px solid #fff; border-radius: 50%; position: absolute; bottom: -1px; right: -1px; }
+
+  .typing-indicator { font-size: 11px; color: var(--sub); font-style: italic; padding: 2px 16px; min-height: 18px; }
 
   /* Modal */
-  .modal {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-    padding: 20px;
-  }
+  .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
   .modal.active { display: flex; }
-  .modal-box {
-    background: #fff;
-    border-radius: 20px;
-    padding: 24px;
-    width: 100%;
-    max-width: 360px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  }
+  .modal-box { background: #fff; border-radius: 20px; padding: 24px; width: 100%; max-width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
   .modal-box h3 { font-size: 18px; margin-bottom: 14px; }
 
-  .typing-indicator {
-    font-size: 11px;
-    color: var(--sub);
-    font-style: italic;
-    padding: 2px 16px 4px;
-  }
+  .status-bar { font-size: 10px; text-align: center; padding: 4px; background: #fffbe6; color: #b8860b; }
+  .status-bar.ok { background: #e8f5e9; color: #388e3c; }
 
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #d5cfc8; border-radius: 2px; }
 
-  .toast {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #333;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 13px;
-    z-index: 300;
-    animation: tst 0.3s ease;
-    pointer-events: none;
-  }
-  @keyframes tst { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
-
-  .loading-spinner {
-    display: inline-block;
-    width: 20px; height: 20px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 13px; z-index: 300; pointer-events: none; animation: tst 0.3s ease; }
+  @keyframes tst { from {opacity:0;transform:translateX(-50%) translateY(20px);} to {opacity:1;transform:translateX(-50%) translateY(0);} }
 </style>
 </head>
 <body>
 
 <div class="app" id="app">
 
-  <!-- ═══════ LOGIN ═══════ -->
+  <!-- LOGIN -->
   <div class="screen active" id="loginScreen">
     <div class="login-wrap">
       <div class="logo">💬</div>
@@ -349,39 +138,41 @@
         <input type="text" id="usernameInput" placeholder="Masukin nama panggilan..." maxlength="20" autocomplete="off">
       </div>
       <button class="btn btn-primary" id="loginBtn" onclick="login()">🚀 Masuk & Ngobrol</button>
-      <div style="font-size:11px;color:var(--sub);margin-top:12px;max-width:280px;text-align:center;">
-        🫂 Tempat curhat aman. Ga perlu email, langsung gabung chat rame-rame!
+      <div style="font-size:11px;color:var(--sub);margin-top:16px;text-align:center;max-width:280px;">
+        🫂 Ga perlu email, langsung gabung chat rame-rame!<br>
+        <span style="font-size:10px;color:#999;">Real-time • Multi-device • Firebase</span>
       </div>
     </div>
   </div>
 
-  <!-- ═══════ TOPICS ═══════ -->
+  <!-- TOPICS -->
   <div class="screen" id="topicsScreen">
     <div class="app-header">
-      <div class="back" style="visibility:hidden">←</div>
-      <div class="title">💬 CurhatYuk</div>
-      <div class="action" onclick="showNewTopicModal()">＋</div>
+      <span class="back" style="visibility:hidden">←</span>
+      <span class="title">💬 CurhatYuk</span>
+      <span class="action" onclick="showNewTopicModal()">＋</span>
     </div>
+    <div class="status-bar" id="connStatus">Menghubungkan...</div>
     <div class="topics-wrap" id="topicsList"></div>
   </div>
 
-  <!-- ═══════ CHAT ═══════ -->
+  <!-- CHAT -->
   <div class="screen" id="chatScreen">
     <div class="app-header">
-      <div class="back" onclick="goToTopics()">←</div>
-      <div class="title" id="chatTitle">Topik</div>
-      <div class="action" onclick="showUsersModal()">👥</div>
+      <span class="back" onclick="goToTopics()">←</span>
+      <span class="title" id="chatTitle">Topik</span>
+      <span class="action" onclick="showUsersModal()">👥</span>
     </div>
-    <div class="online-bar" id="onlineBar"></div>
+    <div class="online-bar" id="onlineBar"><span class="none">memuat...</span></div>
     <div class="chat-messages" id="chatMessages"></div>
-    <div id="typingInd" class="typing-indicator"></div>
+    <div class="typing-indicator" id="typingInd"></div>
     <div class="chat-input">
       <textarea id="msgInput" placeholder="Tulis pesan..." rows="1" onkeydown="hk(event)" oninput="ar(this)"></textarea>
       <button class="snd" id="sendBtn" onclick="sendMessage()" disabled>➤</button>
     </div>
   </div>
 
-  <!-- ═══════ NEW TOPIC MODAL ═══════ -->
+  <!-- NEW TOPIC MODAL -->
   <div class="modal" id="newTopicModal">
     <div class="modal-box">
       <h3>✨ Bikin Topik Baru</h3>
@@ -393,7 +184,7 @@
     </div>
   </div>
 
-  <!-- ═══════ USERS MODAL ═══════ -->
+  <!-- USERS MODAL -->
   <div class="modal" id="usersModal">
     <div class="modal-box">
       <h3>👥 Online di Topik Ini</h3>
@@ -406,457 +197,413 @@
 <div class="toast" id="toast" style="display:none;"></div>
 
 <script>
-// ═══════════════════════════════════════════
-// FIREBASE INIT
-// ═══════════════════════════════════════════
-const firebaseConfig = {
-  apiKey: "AIzaSyBrlu-zqm8xWqH2BxXsW2F_0Jg4fDyZZRA",
-  authDomain: "curhatyuk-294f0.firebaseapp.com",
-  databaseURL: "https://curhatyuk-294f0-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "curhatyuk-294f0",
-  storageBucket: "curhatyuk-294f0.firebasestorage.app",
-  messagingSenderId: "74402594391",
-  appId: "1:74402594391:web:f11f0dfb0a1a14e5ce6d12"
-};
-
-firebase.initializeApp(firebaseConfig);
+// ═══════════════ FIREBASE ═══════════════
+try {
+  firebase.initializeApp({
+    apiKey: "AIzaSyBrlu-zqm8xWqH2BxXsW2F_0Jg4fDyZZRA",
+    authDomain: "curhatyuk-294f0.firebaseapp.com",
+    databaseURL: "https://curhatyuk-294f0-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "curhatyuk-294f0",
+    storageBucket: "curhatyuk-294f0.firebasestorage.app",
+    messagingSenderId: "74402594391",
+    appId: "1:74402594391:web:f11f0dfb0a1a14e5ce6d12"
+  });
+  console.log('🔥 Firebase initialized');
+} catch(e) {
+  console.error('Firebase init error:', e);
+  document.body.innerHTML = '<div style="padding:40px;text-align:center"><h2>❌ Gagal konek Firebase</h2><p>'+e.message+'</p></div>';
+}
 const db = firebase.database();
 
-// ═══════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════
-let currentUser = null;
-let currentTopic = null;
-let messagesRef = null;
-let onlineRef = null;
-let typingRef = null;
-let presenceRef = null;
-let connectedRef = null;
-const userColors = ['#e74c3c','#e67e22','#f39c12','#2ecc71','#1abc9c','#3498db','#9b59b6','#e91e63','#00bcd4','#ff5722','#795548','#607d8b','#16a085','#c0392b','#8e44ad','#d35400'];
+// ═══════════════ HELPERS ═══════════════
+const COLORS = ['#e74c3c','#e67e22','#f39c12','#2ecc71','#1abc9c','#3498db','#9b59b6','#e91e63','#00bcd4','#ff5722','#795548','#607d8b','#16a085','#c0392b','#8e44ad','#d35400'];
+function hc(n){let h=0;for(let i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h);return COLORS[Math.abs(h)%COLORS.length];}
+function gid(){return db.ref().push().key;}
+function ts(){let d=new Date();return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
+function t(msg){let e=document.getElementById('toast');e.textContent=msg;e.style.display='block';setTimeout(()=>e.style.display='none',2000);}
 
-function hashColor(name) {
-  let h = 0;
-  for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
-  return userColors[Math.abs(h) % userColors.length];
-}
+let currentUser = null, currentTopic = null, msgListener = null, presenceListener = null, typingListener = null, myPresenceRef = null;
 
-function genId() { return db.ref().push().key; }
+// ═══════════════ NAV ═══════════════
+function ss(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function cm(id){document.getElementById(id).classList.remove('active');}
 
-function toast(text) {
-  let t = document.getElementById('toast');
-  t.textContent = text; t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 2000);
-}
+// ═══════════════ CONNECTION STATUS ═══════════════
+db.ref('.info/connected').on('value', snap => {
+  let el = document.getElementById('connStatus');
+  if (snap.val() === true) {
+    el.textContent = '🟢 Terhubung — real-time aktif';
+    el.className = 'status-bar ok';
+  } else {
+    el.textContent = '🔴 Tidak terhubung — coba refresh';
+    el.className = 'status-bar';
+  }
+});
 
-// ═══════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-// ═══════════════════════════════════════════
-// LOGIN
-// ═══════════════════════════════════════════
+// ═══════════════ LOGIN ═══════════════
 function login() {
   let name = document.getElementById('usernameInput').value.trim();
-  if (!name || name.length < 2) { toast('Isi nama dulu ya (min 2 karakter) 😊'); return; }
-
+  if (!name || name.length < 2) { t('Isi nama dulu ya 😊'); return; }
+  
   let btn = document.getElementById('loginBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loading-spinner"></span> Connecting...';
-
-  let uid = genId();
-  currentUser = {
-    id: uid,
-    name: name,
-    color: hashColor(name),
-    initial: name.charAt(0).toUpperCase()
-  };
-
-  // Save user to DB
+  btn.disabled = true; btn.textContent = 'Menghubungkan...';
+  
+  let uid = gid();
+  currentUser = { id: uid, name, color: hc(name), initial: name.charAt(0).toUpperCase() };
+  
+  // Save user profile
   db.ref('users/' + uid).set({
-    name: currentUser.name,
-    color: currentUser.color,
+    name, color: currentUser.color,
     lastSeen: firebase.database.ServerValue.TIMESTAMP
   });
-
-  // Setup presence (online/offline)
-  connectedRef = db.ref('.info/connected');
-  presenceRef = db.ref('users/' + uid + '/online');
   
-  connectedRef.on('value', snap => {
+  // Setup global presence
+  let userOnlineRef = db.ref('users/' + uid + '/online');
+  db.ref('.info/connected').on('value', snap => {
     if (snap.val() === true) {
-      presenceRef.set(true);
-      presenceRef.onDisconnect().remove();
+      userOnlineRef.set(firebase.database.ServerValue.TIMESTAMP);
+      userOnlineRef.onDisconnect().remove();
     }
   });
-
-  // Save locally
-  localStorage.setItem('curhatyuk_user', JSON.stringify(currentUser));
-
-  btn.disabled = false;
-  btn.textContent = '🚀 Masuk & Ngobrol';
   
-  showScreen('topicsScreen');
+  localStorage.setItem('cy_user', JSON.stringify(currentUser));
+  
+  btn.disabled = false; btn.textContent = '🚀 Masuk & Ngobrol';
+  ss('topicsScreen');
   loadTopics();
+  
+  // Clean stale presence on login
+  cleanStalePresence();
 }
 
 // Auto-restore session
-(function() {
-  let stored = localStorage.getItem('curhatyuk_user');
-  if (stored) {
-    currentUser = JSON.parse(stored);
+(function(){
+  let s = localStorage.getItem('cy_user');
+  if (s) {
+    currentUser = JSON.parse(s);
     document.getElementById('usernameInput').value = currentUser.name;
-    
-    // Re-establish presence
-    connectedRef = db.ref('.info/connected');
-    presenceRef = db.ref('users/' + currentUser.id + '/online');
-    connectedRef.on('value', snap => {
+    let userOnlineRef = db.ref('users/' + currentUser.id + '/online');
+    db.ref('.info/connected').on('value', snap => {
       if (snap.val() === true) {
-        presenceRef.set(true);
-        presenceRef.onDisconnect().remove();
+        userOnlineRef.set(firebase.database.ServerValue.TIMESTAMP);
+        userOnlineRef.onDisconnect().remove();
       }
     });
   }
 })();
 
-// ═══════════════════════════════════════════
-// TOPICS (from Firebase)
-// ═══════════════════════════════════════════
-const defaultTopics = [
-  { id: 'sepakbola', emoji: '⚽', name: 'Sepak Bola', desc: 'Ngobrolin bola, Liga, tim favorit!', color: '#4a9e6b' },
-  { id: 'politik', emoji: '🗳️', name: 'Politik & Isu', desc: 'Debat panas seputar politik terkini', color: '#c0392b' },
-  { id: 'musik', emoji: '🎵', name: 'Musik & Lagu', desc: 'Rekomendasi lagu, genre, konser', color: '#8e44ad' },
-  { id: 'anime', emoji: '🎬', name: 'Anime & Film', desc: 'Spoiler warning! Ngobrolin anime favorit', color: '#e67e22' },
-  { id: 'kuliah', emoji: '🎓', name: 'Dunia Kuliah', desc: 'Tugas, dosen, skripsi — curhat bebas!', color: '#2980b9' },
-  { id: 'cinta', emoji: '💔', name: 'Cinta & Patah Hati', desc: 'Curhat soal doi, mantan, atau gebetan', color: '#e74c8b' },
-  { id: 'mentalhealth', emoji: '🧠', name: 'Mental Health', desc: 'Support group — cerita, dengerin, support', color: '#6c9a8b' },
-  { id: 'game', emoji: '🎮', name: 'Gaming', desc: 'Valorant, ML, Genshin, semua game!', color: '#2c3e50' },
-  { id: 'makanan', emoji: '🍜', name: 'Kuliner & Makanan', desc: 'Rekomendasi makanan enak se-Indonesia', color: '#d35400' },
-  { id: 'teknologi', emoji: '💻', name: 'Teknologi & AI', desc: 'Bahas gadget, coding, AI terbaru', color: '#1a5276' },
-  { id: 'random', emoji: '🎲', name: 'Random / Bebas', desc: 'Ngobrol apa aja — topik bebas!', color: '#7f8c8d' },
-  { id: 'curhat', emoji: '🫂', name: 'Curhat Malam', desc: 'Tempat cerita sampe nangis bareng', color: '#5b4a6a' },
+// Clean stale presence entries (older than 5 min)
+function cleanStalePresence() {
+  let cutoff = Date.now() - 300000; // 5 min ago
+  db.ref('topic_presence').once('value').then(snap => {
+    let data = snap.val() || {};
+    let updates = {};
+    Object.entries(data).forEach(([topicId, users]) => {
+      Object.entries(users).forEach(([uid, u]) => {
+        if (u.timestamp && u.timestamp < cutoff) {
+          updates['topic_presence/' + topicId + '/' + uid] = null;
+        }
+      });
+    });
+    if (Object.keys(updates).length > 0) {
+      db.ref().update(updates);
+      console.log('🧹 Cleaned', Object.keys(updates).length, 'stale presence entries');
+    }
+  });
+}
+
+// ═══════════════ TOPICS ═══════════════
+const DEFAULT_TOPICS = [
+  { emoji:'⚽',name:'Sepak Bola',desc:'Ngobrolin bola, Liga, tim favorit!',color:'#4a9e6b' },
+  { emoji:'🗳️',name:'Politik & Isu',desc:'Debat panas seputar politik terkini',color:'#c0392b' },
+  { emoji:'🎵',name:'Musik & Lagu',desc:'Rekomendasi lagu, genre, konser',color:'#8e44ad' },
+  { emoji:'🎬',name:'Anime & Film',desc:'Spoiler warning! Ngobrolin anime favorit',color:'#e67e22' },
+  { emoji:'🎓',name:'Dunia Kuliah',desc:'Tugas, dosen, skripsi — curhat bebas!',color:'#2980b9' },
+  { emoji:'💔',name:'Cinta & Patah Hati',desc:'Curhat soal doi, mantan, atau gebetan',color:'#e74c8b' },
+  { emoji:'🧠',name:'Mental Health',desc:'Support group — cerita, dengerin, support',color:'#6c9a8b' },
+  { emoji:'🎮',name:'Gaming',desc:'Valorant, ML, Genshin, semua game!',color:'#2c3e50' },
+  { emoji:'🍜',name:'Kuliner & Makanan',desc:'Rekomendasi makanan enak se-Indonesia',color:'#d35400' },
+  { emoji:'💻',name:'Teknologi & AI',desc:'Bahas gadget, coding, AI terbaru',color:'#1a5276' },
+  { emoji:'🎲',name:'Random / Bebas',desc:'Ngobrol apa aja — topik bebas!',color:'#7f8c8d' },
+  { emoji:'🫂',name:'Curhat Malam',desc:'Tempat cerita sampe nangis bareng',color:'#5b4a6a' },
 ];
 
 function loadTopics() {
   db.ref('topics').once('value').then(snap => {
     let topics = snap.val();
     if (!topics) {
-      // Seed default topics
+      // Seed defaults
       let updates = {};
-      defaultTopics.forEach(t => {
-        updates[t.id] = { emoji: t.emoji, name: t.name, desc: t.desc, color: t.color, createdAt: firebase.database.ServerValue.TIMESTAMP };
+      DEFAULT_TOPICS.forEach(t => {
+        let id = t.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+        updates[id] = { emoji:t.emoji, name:t.name, desc:t.desc, color:t.color, createdAt: firebase.database.ServerValue.TIMESTAMP };
       });
-      db.ref('topics').set(updates);
-      renderTopics(defaultTopics);
-    } else {
-      let arr = Object.entries(topics).map(([id, t]) => ({ id, ...t }));
-      arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-      renderTopics(arr);
+      db.ref('topics').set(updates).then(() => loadTopics());
+      return;
     }
-  });
-
-  // Listen for new topics
-  db.ref('topics').on('child_added', snap => {
-    // Refresh list
-    db.ref('topics').once('value').then(s => {
-      let topics = s.val();
-      if (topics) {
-        let arr = Object.entries(topics).map(([id, t]) => ({ id, ...t }));
-        arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-        renderTopics(arr);
-      }
+    
+    // Get presence counts
+    db.ref('topic_presence').once('value').then(psnap => {
+      let presence = psnap.val() || {};
+      let cutoff = Date.now() - 60000; // users active in last 60s
+      
+      let arr = Object.entries(topics).map(([id, t]) => {
+        let online = 0;
+        if (presence[id]) {
+          online = Object.values(presence[id]).filter(u => u.timestamp > cutoff).length;
+        }
+        return { id, ...t, online };
+      });
+      
+      // Sort: topics with online users first, then by createdAt
+      arr.sort((a, b) => {
+        if (a.online > 0 && b.online === 0) return -1;
+        if (b.online > 0 && a.online === 0) return 1;
+        return (b.createdAt||0) - (a.createdAt||0);
+      });
+      
+      renderTopicList(arr);
     });
   });
-}
-
-function renderTopics(topics) {
-  let popular = [...topics].sort((a,b) => (b.active||0) - (a.active||0)).slice(0, 7);
   
-  document.getElementById('topicsList').innerHTML = `
-    <h3>🔥 Populer</h3>
-    ${popular.map(t => topicCard(t)).join('')}
-    <h3>📚 Semua Topik</h3>
-    ${topics.map(t => topicCard(t)).join('')}
-  `;
+  // Realtime listener for topic changes
+  db.ref('topics').on('child_changed', () => loadTopics());
+  db.ref('topics').on('child_added', () => loadTopics());
+  db.ref('topic_presence').on('value', () => loadTopics());
 }
 
-function topicCard(t) {
-  return `
-    <div class="topic-card" onclick="openTopic('${t.id}')">
-      <div class="tc-icon" style="background:${t.color||'#999'}20;color:${t.color||'#999'}">${t.emoji||'💬'}</div>
-      <div class="tc-info">
-        <div class="tc-name">${t.name}</div>
-        <div class="tc-desc">${t.desc||''}</div>
-      </div>
-      <div class="tc-meta">
-        <div class="tc-count">👥 ${t.active||0}</div>
-      </div>
-    </div>`;
+function renderTopicList(arr) {
+  let live = arr.filter(t=>t.online>0);
+  let rest = arr.filter(t=>t.online===0);
+  
+  document.getElementById('topicsList').innerHTML = 
+    (live.length > 0 ? '<h3>🟢 Ada yang online</h3>' + live.map(tc).join('') : '') +
+    '<h3>📚 Semua Topik</h3>' + rest.map(tc).join('');
+}
+
+function tc(t) {
+  return `<div class="topic-card" onclick="openTopic('${t.id}')">
+    <div class="tc-icon" style="background:${t.color||'#999'}20;color:${t.color||'#999'}">${t.emoji||'💬'}</div>
+    <div class="tc-info"><div class="tc-name">${t.name}</div><div class="tc-desc">${t.desc||''}</div></div>
+    <div class="tc-meta">
+      ${t.online > 0 ? '<span class="tc-live"></span> ' : ''}
+      <div class="tc-count">${t.online > 0 ? '👥 '+t.online+' online' : ''}</div>
+    </div></div>`;
 }
 
 function showNewTopicModal() {
-  document.getElementById('topicEmoji').value = '';
-  document.getElementById('topicName').value = '';
-  document.getElementById('topicDesc').value = '';
+  document.getElementById('topicEmoji').value='';
+  document.getElementById('topicName').value='';
+  document.getElementById('topicDesc').value='';
   document.getElementById('newTopicModal').classList.add('active');
 }
 
 function createTopic() {
-  let emoji = document.getElementById('topicEmoji').value.trim() || '💬';
+  let emoji = document.getElementById('topicEmoji').value.trim()||'💬';
   let name = document.getElementById('topicName').value.trim();
-  let desc = document.getElementById('topicDesc').value.trim() || 'Topik baru — ayo gabung!';
+  let desc = document.getElementById('topicDesc').value.trim()||'Topik baru — ayo gabung!';
+  if(!name){t('Isi nama topik dulu!');return;}
   
-  if (!name) { toast('Isi nama topik dulu!'); return; }
+  let id = name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-'+Date.now().toString(36);
+  let color='#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
   
-  let id = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') + '-' + Date.now().toString(36);
-  let color = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
-  
-  db.ref('topics/' + id).set({
-    emoji, name, desc, color,
-    createdAt: firebase.database.ServerValue.TIMESTAMP,
-    active: 1
-  });
-  
-  closeModal('newTopicModal');
-  toast('✅ Topik baru dibuat!');
+  db.ref('topics/'+id).set({emoji,name,desc,color,createdAt:firebase.database.ServerValue.TIMESTAMP});
+  cm('newTopicModal');
+  t('✅ Topik dibuat!');
 }
 
-// ═══════════════════════════════════════════
-// CHAT (Real-time via Firebase)
-// ═══════════════════════════════════════════
+// ═══════════════ CHAT ═══════════════
 function openTopic(topicId) {
-  if (!currentUser) return;
+  if(!currentUser)return;
   
-  // Clean up previous listeners
-  if (messagesRef) messagesRef.off();
-  if (typingRef) typingRef.off();
-  if (onlineRef) onlineRef.off();
-
-  db.ref('topics/' + topicId).once('value').then(snap => {
+  // Clean previous
+  if(msgListener){db.ref('messages/'+(currentTopic?.id||'')).off('child_added',msgListener);msgListener=null;}
+  if(presenceListener){db.ref('topic_presence/'+(currentTopic?.id||'')).off('value',presenceListener);presenceListener=null;}
+  if(typingListener){db.ref('typing/'+(currentTopic?.id||'')).off('value',typingListener);typingListener=null;}
+  if(myPresenceRef){myPresenceRef.remove();myPresenceRef=null;}
+  
+  db.ref('topics/'+topicId).once('value').then(snap => {
     let topic = snap.val();
-    if (!topic) { toast('Topik tidak ditemukan'); return; }
+    if(!topic){t('Topik tidak ditemukan');return;}
+    currentTopic = {id:topicId,...topic};
     
-    currentTopic = { id: topicId, ...topic };
-    document.getElementById('chatTitle').textContent = (topic.emoji||'💬') + ' ' + topic.name;
-    document.getElementById('chatMessages').innerHTML = '';
-    document.getElementById('onlineBar').innerHTML = '';
+    document.getElementById('chatTitle').textContent=(topic.emoji||'💬')+' '+topic.name;
+    document.getElementById('chatMessages').innerHTML='';
+    document.getElementById('onlineBar').innerHTML='<span class="none">memuat...</span>';
+    document.getElementById('typingInd').textContent='';
     
-    showScreen('chatScreen');
+    ss('chatScreen');
     
-    // Track online users in this topic
-    onlineRef = db.ref('topic_presence/' + topicId + '/' + currentUser.id);
-    onlineRef.set({
-      name: currentUser.name,
-      color: currentUser.color,
-      timestamp: firebase.database.ServerValue.TIMESTAMP
+    // My presence in this topic
+    myPresenceRef = db.ref('topic_presence/'+topicId+'/'+currentUser.id);
+    myPresenceRef.set({
+      name:currentUser.name, color:currentUser.color,
+      timestamp:firebase.database.ServerValue.TIMESTAMP
     });
-    onlineRef.onDisconnect().remove();
+    myPresenceRef.onDisconnect().remove();
     
-    // Listen for online users
-    db.ref('topic_presence/' + topicId).on('value', snap => {
-      renderOnlineUsers(snap.val() || {});
-    });
+    // Listen for presence changes
+    presenceListener = snap => {
+      renderOnlineUsers(snap.val()||{});
+    };
+    db.ref('topic_presence/'+topicId).on('value', presenceListener);
     
-    // Update active count
-    db.ref('topic_presence/' + topicId).once('value').then(s => {
-      let count = s.numChildren();
-      db.ref('topics/' + topicId + '/active').set(count);
-    });
-    
-    // Listen for messages
-    messagesRef = db.ref('messages/' + topicId);
-    messagesRef.off(); // ensure clean
-    messagesRef.limitToLast(50).on('child_added', snap => {
+    // Listen for messages - ORDERED by timestamp
+    msgListener = snap => {
       renderMessage(snap.val(), snap.key);
-      scrollToBottom();
-    });
+      scrollDown();
+    };
+    db.ref('messages/'+topicId).orderByChild('timestamp').limitToLast(50).on('child_added', msgListener);
     
     // Listen for typing
-    typingRef = db.ref('typing/' + topicId + '/' + currentUser.id);
-    db.ref('typing/' + topicId).on('value', snap => {
-      let typers = snap.val() || {};
+    let myTypingRef = db.ref('typing/'+topicId+'/'+currentUser.id);
+    typingListener = snap => {
+      let typers = snap.val()||{};
       let names = Object.entries(typers)
-        .filter(([uid, v]) => uid !== currentUser.id && v)
-        .map(([uid, v]) => v.name);
-      let el = document.getElementById('typingInd');
-      if (names.length > 0) {
-        el.textContent = names.slice(0,2).join(', ') + (names.length>2?' & lainnya':'') + ' sedang mengetik...';
-      } else {
-        el.textContent = '';
+        .filter(([uid,v])=>uid!==currentUser.id&&v)
+        .map(([uid,v])=>v.name);
+      document.getElementById('typingInd').textContent = 
+        names.length>0 ? '✍️ '+names.slice(0,2).join(', ')+(names.length>2?' & '+ (names.length-2)+' lainnya':'')+' mengetik...' : '';
+    };
+    db.ref('typing/'+topicId).on('value', typingListener);
+    
+    // Periodic presence heartbeat
+    setInterval(() => {
+      if(currentTopic && myPresenceRef) {
+        myPresenceRef.update({timestamp:firebase.database.ServerValue.TIMESTAMP});
       }
-    });
+    }, 30000);
     
     document.getElementById('msgInput').focus();
   });
 }
 
-function renderMessage(msg, msgId) {
-  if (!currentUser) return;
-  let container = document.getElementById('chatMessages');
-  
-  // Check if already rendered
-  if (document.getElementById('msg-' + msgId)) return;
-  
-  if (msg.type === 'system') {
-    let div = document.createElement('div');
-    div.className = 'sys';
-    div.id = 'msg-' + msgId;
-    div.textContent = msg.text || '';
-    container.appendChild(div);
-    return;
-  }
-  
-  let isMe = msg.senderId === currentUser.id;
-  let cls = isMe ? 'me' : 'other';
-  let senderName = isMe ? '' : `<div class="sdr">${msg.senderName||'Anon'}</div>`;
-  let col = msg.senderColor || '#999';
-  
-  let text = (msg.text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  
-  // Big emoji detection
-  if (/^[\p{Emoji}\u200d\s]+$/u.test(msg.text||'') && (msg.text||'').trim().length <= 8) {
-    let div = document.createElement('div');
-    div.className = 'msg ' + cls;
-    div.id = 'msg-' + msgId;
-    div.innerHTML = `
-      ${!isMe ? `<div class="avt" style="background:${col}">${(msg.senderName||'?')[0].toUpperCase()}</div>` : ''}
-      <div class="bbl">
-        ${senderName}
-        <div class="big-emoji">${msg.text}</div>
-        <div class="tm">${msg.time||''}</div>
-      </div>
-      ${isMe ? `<div class="avt" style="background:${currentUser.color}">${currentUser.initial}</div>` : ''}
-    `;
-    container.appendChild(div);
-    return;
-  }
-  
-  let div = document.createElement('div');
-  div.className = 'msg ' + cls;
-  div.id = 'msg-' + msgId;
-  div.innerHTML = `
-    ${!isMe ? `<div class="avt" style="background:${col}">${(msg.senderName||'?')[0].toUpperCase()}</div>` : ''}
-    <div class="bbl">
-      ${senderName}
-      ${text}
-      <div class="tm">${msg.time||''}</div>
-    </div>
-    ${isMe ? `<div class="avt" style="background:${currentUser.color}">${currentUser.initial}</div>` : ''}
-  `;
-  container.appendChild(div);
-}
-
 function renderOnlineUsers(users) {
   let bar = document.getElementById('onlineBar');
-  let arr = Object.entries(users);
-  bar.innerHTML = arr.map(([uid, u]) => `
+  let cutoff = Date.now() - 60000;
+  let active = Object.entries(users).filter(([uid,u])=>u.timestamp>cutoff);
+  
+  if(active.length===0) {
+    bar.innerHTML='<span class="none">Belum ada yang online — kamu yang pertama! 🎉</span>';
+    return;
+  }
+  
+  bar.innerHTML = active.map(([uid,u])=>`
     <div class="on-u" title="${u.name}">
       <div class="on-dot" style="background:${u.color||'#999'}">${(u.name||'?')[0].toUpperCase()}</div>
       <span>${u.name||'?'}</span>
-    </div>
-  `).join('');
+    </div>`).join('');
+}
+
+function renderMessage(msg, msgId) {
+  if(!currentUser)return;
+  let container = document.getElementById('chatMessages');
+  if(document.getElementById('msg-'+msgId))return;
+  
+  if(msg.type==='system'){
+    let d=document.createElement('div');d.className='sys';d.id='msg-'+msgId;d.textContent=msg.text||'';container.appendChild(d);return;
+  }
+  
+  let isMe = msg.senderId===currentUser.id;
+  let text = (msg.text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  let isEmoji = /^[\p{Emoji}\u200d\s]+$/u.test(msg.text||'') && (msg.text||'').trim().length<=8;
+  
+  let d=document.createElement('div');
+  d.className='msg '+(isMe?'me':'other');
+  d.id='msg-'+msgId;
+  d.innerHTML = 
+    (!isMe?`<div class="avt" style="background:${msg.senderColor||'#999'}">${(msg.senderName||'?')[0].toUpperCase()}</div>`:'') +
+    `<div class="bbl">
+      ${!isMe?`<div class="sdr">${msg.senderName||'Anon'}</div>`:''}
+      ${isEmoji?`<div class="big-emoji">${msg.text}</div>`:text}
+      <div class="tm">${msg.time||''}</div>
+    </div>` +
+    (isMe?`<div class="avt" style="background:${currentUser.color}">${currentUser.initial}</div>`:'');
+  container.appendChild(d);
 }
 
 function sendMessage() {
-  if (!currentTopic || !currentUser) return;
-  let input = document.getElementById('msgInput');
-  let text = input.value.trim();
-  if (!text) return;
+  if(!currentTopic||!currentUser)return;
+  let input=document.getElementById('msgInput');
+  let text=input.value.trim();
+  if(!text)return;
   
-  let time = new Date();
-  let timeStr = time.getHours().toString().padStart(2,'0') + ':' + time.getMinutes().toString().padStart(2,'0');
-  
-  db.ref('messages/' + currentTopic.id).push({
-    type: 'message',
-    senderId: currentUser.id,
-    senderName: currentUser.name,
-    senderColor: currentUser.color,
-    text: text,
-    time: timeStr,
-    timestamp: firebase.database.ServerValue.TIMESTAMP
+  let now=new Date();
+  db.ref('messages/'+currentTopic.id).push({
+    type:'message',
+    senderId:currentUser.id,
+    senderName:currentUser.name,
+    senderColor:currentUser.color,
+    text:text,
+    time:ts(),
+    timestamp:firebase.database.ServerValue.TIMESTAMP
+  }).then(()=>{
+    console.log('✅ Message sent to',currentTopic.id);
+  }).catch(e=>{
+    console.error('❌ Send failed:',e);
+    t('Gagal kirim: '+e.message);
   });
   
   // Clear typing
-  typingRef.set(false);
+  db.ref('typing/'+currentTopic.id+'/'+currentUser.id).set(false);
   
-  input.value = '';
-  document.getElementById('sendBtn').disabled = true;
+  input.value='';
+  document.getElementById('sendBtn').disabled=true;
 }
 
-function hk(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-  setTimeout(() => {
-    let inp = document.getElementById('msgInput');
-    document.getElementById('sendBtn').disabled = !inp.value.trim();
-    
-    // Typing indicator
-    if (currentTopic && typingRef) {
-      typingRef.set(inp.value.trim() ? { name: currentUser.name, timestamp: firebase.database.ServerValue.TIMESTAMP } : false);
+function hk(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
+  setTimeout(()=>{
+    let inp=document.getElementById('msgInput');
+    document.getElementById('sendBtn').disabled=!inp.value.trim();
+    if(currentTopic){
+      db.ref('typing/'+currentTopic.id+'/'+currentUser.id).set(
+        inp.value.trim()?{name:currentUser.name,timestamp:firebase.database.ServerValue.TIMESTAMP}:false
+      );
     }
-  }, 50);
+  },50);
+}
+function ar(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+
+function scrollDown(){
+  let c=document.getElementById('chatMessages');
+  let nearBot=c.scrollHeight-c.scrollTop-c.clientHeight<200;
+  if(nearBot)setTimeout(()=>c.scrollTop=c.scrollHeight,60);
 }
 
-function ar(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
-
-function scrollToBottom() {
-  let c = document.getElementById('chatMessages');
-  // Only auto-scroll if user is near bottom
-  let nearBottom = c.scrollHeight - c.scrollTop - c.clientHeight < 150;
-  if (nearBottom) {
-    setTimeout(() => c.scrollTop = c.scrollHeight, 50);
-  }
-}
-
-function goToTopics() {
-  if (messagesRef) messagesRef.off();
-  if (typingRef) { typingRef.set(false); typingRef = null; }
-  if (onlineRef) { onlineRef.remove(); onlineRef = null; }
-  
-  if (currentTopic) {
-    db.ref('topic_presence/' + currentTopic.id).once('value').then(s => {
-      let count = s.numChildren();
-      db.ref('topics/' + currentTopic.id + '/active').set(Math.max(0, count - 1));
-    });
-  }
-  
-  currentTopic = null;
-  showScreen('topicsScreen');
+function goToTopics(){
+  if(msgListener){db.ref('messages/'+(currentTopic?.id||'')).off('child_added',msgListener);msgListener=null;}
+  if(presenceListener){db.ref('topic_presence/'+(currentTopic?.id||'')).off('value',presenceListener);presenceListener=null;}
+  if(typingListener){db.ref('typing/'+(currentTopic?.id||'')).off('value',typingListener);typingListener=null;}
+  if(myPresenceRef){myPresenceRef.remove();myPresenceRef=null;}
+  currentTopic=null;
+  ss('topicsScreen');
   loadTopics();
 }
 
-function showUsersModal() {
-  if (!currentTopic) return;
-  db.ref('topic_presence/' + currentTopic.id).once('value').then(snap => {
-    let users = snap.val() || {};
-    document.getElementById('usersList').innerHTML = Object.entries(users).map(([uid, u]) => `
+function showUsersModal(){
+  if(!currentTopic)return;
+  db.ref('topic_presence/'+currentTopic.id).once('value').then(snap=>{
+    let users=snap.val()||{};
+    let cutoff=Date.now()-60000;
+    let active=Object.entries(users).filter(([uid,u])=>u.timestamp>cutoff);
+    document.getElementById('usersList').innerHTML=active.map(([uid,u])=>`
       <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #eee;">
         <div style="width:36px;height:36px;border-radius:50%;background:${u.color};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">${u.name[0].toUpperCase()}</div>
         <span style="font-weight:600;">${u.name}</span>
-        ${uid === currentUser.id ? '<span style="font-size:10px;color:var(--sub);margin-left:auto;">(kamu)</span>' : '<span style="font-size:10px;color:var(--online);margin-left:auto;">🟢 online</span>'}
-      </div>
-    `).join('') || '<p style="color:var(--sub);font-size:13px;">Belum ada yang online</p>';
+        ${uid===currentUser.id?'<span style="font-size:10px;color:var(--sub);margin-left:auto;">(kamu)</span>':'<span style="font-size:10px;color:var(--online);margin-left:auto;">🟢 online</span>'}
+      </div>`).join('')||'<p style="color:var(--sub);font-size:13px;">Ga ada yang online saat ini</p>';
     document.getElementById('usersModal').classList.add('active');
   });
 }
 
-// ═══════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════
-document.getElementById('msgInput').addEventListener('input', function() {
-  document.getElementById('sendBtn').disabled = !this.value.trim();
+// ═══════════════ INIT ═══════════════
+document.getElementById('msgInput').addEventListener('input',function(){
+  document.getElementById('sendBtn').disabled=!this.value.trim();
 });
-document.getElementById('usernameInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') login();
+document.getElementById('usernameInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter')login();
 });
-
 </script>
 </body>
 </html>
