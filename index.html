@@ -4,11 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>💬 CurhatYuk — Ngobrol Tanpa Batas</title>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <style>
   :root {
     --bg: #f8f6f2;
     --card: #fff;
-    --text: #2d2a26;
+    --text: #1a1816;
     --sub: #8a8178;
     --primary: #6c9a8b;
     --primary-dark: #5a8576;
@@ -18,7 +23,7 @@
     --bubble-me: #e8f0ec;
     --bubble-other: #fff;
     --border: #e8e3dc;
-    --online: #6c9a8b;
+    --online: #4caf50;
     --shadow: 0 2px 12px rgba(0,0,0,0.06);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,24 +48,22 @@
     box-shadow: 0 0 40px rgba(0,0,0,0.08);
   }
 
-  /* ── Header ── */
   .app-header {
-    background: linear-gradient(135deg, #6c9a8b, #5a8576);
+    background: linear-gradient(135deg, #6c9a8b, #4a7a6a);
     color: #fff;
-    padding: 16px 20px;
+    padding: 14px 18px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     position: sticky;
     top: 0;
     z-index: 100;
   }
-  .app-header .back { font-size: 20px; cursor: pointer; width: 32px; text-align: center; }
-  .app-header .title { font-weight: 700; font-size: 17px; flex: 1; }
-  .app-header .action { font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
+  .app-header .back { font-size: 22px; cursor: pointer; width: 30px; text-align: center; }
+  .app-header .title { font-weight: 700; font-size: 16px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .app-header .action { font-size: 20px; cursor: pointer; padding: 6px 10px; border-radius: 8px; }
   .app-header .action:hover { background: rgba(255,255,255,0.15); }
 
-  /* ── Screens ── */
   .screen { display: none; flex-direction: column; height: 100vh; }
   .screen.active { display: flex; }
 
@@ -73,10 +76,11 @@
     justify-content: center;
     padding: 30px;
     text-align: center;
+    background: linear-gradient(180deg, #f0ece7 0%, #f8f6f2 100%);
   }
-  .login-wrap .logo { font-size: 64px; margin-bottom: 8px; }
-  .login-wrap h1 { font-size: 28px; font-weight: 800; margin-bottom: 2px; color: var(--text); }
-  .login-wrap .tagline { font-size: 13px; color: var(--sub); margin-bottom: 28px; }
+  .login-wrap .logo { font-size: 64px; margin-bottom: 6px; }
+  .login-wrap h1 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+  .login-wrap .tagline { font-size: 13px; color: var(--sub); margin-bottom: 26px; }
   .input-group { width: 100%; max-width: 300px; margin-bottom: 14px; text-align: left; }
   .input-group label { font-size: 12px; font-weight: 600; color: var(--sub); display: block; margin-bottom: 4px; }
   .input-group input {
@@ -105,22 +109,13 @@
   }
   .btn-primary { background: var(--primary); color: #fff; }
   .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .btn-primary:disabled { background: #bbb; cursor: not-allowed; transform: none; }
   .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); margin-top: 8px; }
   .btn-outline:hover { background: var(--primary); color: #fff; }
 
-  /* ── Topics Grid ── */
-  .topics-wrap {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px;
-  }
-  .topics-wrap h3 {
-    font-size: 13px;
-    color: var(--sub);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 12px 4px 8px;
-  }
+  /* ── Topics ── */
+  .topics-wrap { flex: 1; overflow-y: auto; padding: 10px; }
+  .topics-wrap h3 { font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 1px; margin: 12px 6px 6px; }
   .topic-card {
     display: flex;
     align-items: center;
@@ -134,7 +129,7 @@
     border: 1px solid transparent;
   }
   .topic-card:hover { background: #f0ece7; border-color: var(--border); }
-  .topic-card .topic-icon {
+  .tc-icon {
     width: 48px; height: 48px;
     border-radius: 14px;
     display: flex;
@@ -143,18 +138,18 @@
     font-size: 22px;
     flex-shrink: 0;
   }
-  .topic-card .topic-info { flex: 1; min-width: 0; }
-  .topic-card .topic-name { font-weight: 700; font-size: 15px; }
-  .topic-card .topic-desc { font-size: 12px; color: var(--sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .topic-card .topic-meta { text-align: right; flex-shrink: 0; }
-  .topic-card .topic-count { font-size: 11px; color: var(--sub); }
-  .topic-card .topic-active { display: inline-block; width: 8px; height: 8px; background: var(--online); border-radius: 50%; }
+  .tc-info { flex: 1; min-width: 0; }
+  .tc-name { font-weight: 700; font-size: 15px; }
+  .tc-desc { font-size: 12px; color: var(--sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tc-meta { text-align: right; flex-shrink: 0; }
+  .tc-count { font-size: 11px; color: var(--sub); }
+  .tc-dot { display: inline-block; width: 8px; height: 8px; background: var(--online); border-radius: 50%; }
 
-  /* ── Chat Screen ── */
+  /* ── Chat ── */
   .chat-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 16px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -163,35 +158,36 @@
   .msg {
     display: flex;
     gap: 8px;
-    max-width: 85%;
+    max-width: 88%;
     animation: msgIn 0.25s ease;
   }
   @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   .msg.me { align-self: flex-end; flex-direction: row-reverse; }
-  .msg .avatar {
+  .msg .avt {
     width: 34px; height: 34px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 15px;
     flex-shrink: 0;
     font-weight: 700;
     color: #fff;
   }
-  .msg .bubble {
+  .msg .bbl {
     padding: 10px 14px;
     border-radius: 16px;
     font-size: 14px;
     line-height: 1.5;
     word-break: break-word;
+    position: relative;
   }
-  .msg.me .bubble { background: var(--bubble-me); border-bottom-right-radius: 4px; }
-  .msg.other .bubble { background: var(--bubble-other); border-bottom-left-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-  .msg .sender { font-size: 11px; font-weight: 700; color: var(--secondary); margin-bottom: 2px; }
-  .msg .time { font-size: 10px; color: var(--sub); margin-top: 4px; text-align: right; }
-  .msg .emoji-rx { font-size: 36px; }
-  .system-msg {
+  .msg.me .bbl { background: var(--bubble-me); border-bottom-right-radius: 4px; }
+  .msg.other .bbl { background: var(--bubble-other); border-bottom-left-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .msg .sdr { font-size: 11px; font-weight: 700; color: var(--secondary); margin-bottom: 2px; }
+  .msg .tm { font-size: 10px; color: var(--sub); margin-top: 4px; text-align: right; }
+  .msg .big-emoji { font-size: 42px; line-height: 1.2; }
+  .sys {
     text-align: center;
     font-size: 11px;
     color: var(--sub);
@@ -199,7 +195,6 @@
     font-style: italic;
   }
 
-  /* ── Input Bar ── */
   .chat-input {
     padding: 10px 14px;
     background: #fff;
@@ -224,7 +219,7 @@
     line-height: 1.4;
   }
   .chat-input textarea:focus { outline: none; }
-  .chat-input .send-btn {
+  .chat-input .snd {
     width: 42px; height: 42px;
     border-radius: 50%;
     background: var(--primary);
@@ -238,10 +233,48 @@
     justify-content: center;
     transition: all 0.2s;
   }
-  .chat-input .send-btn:hover { background: var(--primary-dark); transform: scale(1.05); }
-  .chat-input .send-btn:disabled { background: #ccc; cursor: default; transform: none; }
+  .chat-input .snd:hover { background: var(--primary-dark); }
+  .chat-input .snd:disabled { background: #ccc; cursor: default; }
 
-  /* ── New Topic Modal ── */
+  .online-bar {
+    display: flex;
+    gap: 6px;
+    padding: 8px 14px;
+    overflow-x: auto;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+  }
+  .on-u {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+    color: var(--sub);
+    flex-shrink: 0;
+  }
+  .on-dot {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+    position: relative;
+  }
+  .on-dot::after {
+    content: '';
+    width: 10px; height: 10px;
+    background: var(--online);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -1px; right: -1px;
+  }
+
+  /* Modal */
   .modal {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -261,58 +294,15 @@
     max-width: 360px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   }
-  .modal-box h3 { font-size: 18px; margin-bottom: 16px; }
-  .modal-box .btn { margin-top: 12px; }
+  .modal-box h3 { font-size: 18px; margin-bottom: 14px; }
 
-  /* ── Users Online ── */
-  .online-users {
-    display: flex;
-    gap: 6px;
-    padding: 8px 16px;
-    overflow-x: auto;
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-  }
-  .online-user {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-  .online-user .dot {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    color: #fff;
-    font-weight: 700;
-    position: relative;
-  }
-  .online-user .dot::after {
-    content: '';
-    width: 10px; height: 10px;
-    background: var(--online);
-    border: 2px solid #fff;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 0; right: 0;
-  }
-  .online-user .name { font-size: 10px; color: var(--sub); max-width: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-  /* ── Empty State ── */
-  .empty-state {
-    text-align: center;
-    padding: 40px 20px;
+  .typing-indicator {
+    font-size: 11px;
     color: var(--sub);
+    font-style: italic;
+    padding: 2px 16px 4px;
   }
-  .empty-state .icon { font-size: 48px; margin-bottom: 8px; }
-  .empty-state p { font-size: 13px; }
 
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #d5cfc8; border-radius: 2px; }
@@ -328,17 +318,27 @@
     border-radius: 20px;
     font-size: 13px;
     z-index: 300;
-    animation: toastIn 0.3s ease;
+    animation: tst 0.3s ease;
     pointer-events: none;
   }
-  @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+  @keyframes tst { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+
+  .loading-spinner {
+    display: inline-block;
+    width: 20px; height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
 <div class="app" id="app">
 
-  <!-- ═══════════ LOGIN SCREEN ═══════════ -->
+  <!-- ═══════ LOGIN ═══════ -->
   <div class="screen active" id="loginScreen">
     <div class="login-wrap">
       <div class="logo">💬</div>
@@ -348,161 +348,103 @@
         <label>Nama kamu</label>
         <input type="text" id="usernameInput" placeholder="Masukin nama panggilan..." maxlength="20" autocomplete="off">
       </div>
-      <button class="btn btn-primary" onclick="login()">🚀 Masuk & Ngobrol</button>
+      <button class="btn btn-primary" id="loginBtn" onclick="login()">🚀 Masuk & Ngobrol</button>
       <div style="font-size:11px;color:var(--sub);margin-top:12px;max-width:280px;text-align:center;">
-        🫂 Tempat curhat aman. Ga perlu email, ga perlu password. Pake nama aja, langsung gabung!
+        🫂 Tempat curhat aman. Ga perlu email, langsung gabung chat rame-rame!
       </div>
     </div>
   </div>
 
-  <!-- ═══════════ TOPICS SCREEN ═══════════ -->
+  <!-- ═══════ TOPICS ═══════ -->
   <div class="screen" id="topicsScreen">
     <div class="app-header">
       <div class="back" style="visibility:hidden">←</div>
       <div class="title">💬 CurhatYuk</div>
-      <div class="action" onclick="showNewTopicModal()" title="Bikin Topik Baru">＋</div>
+      <div class="action" onclick="showNewTopicModal()">＋</div>
     </div>
-    <div class="topics-wrap" id="topicsList">
-      <h3>🔥 Topik Populer</h3>
-      <div id="topicsPopular"></div>
-      <h3>📚 Semua Topik</h3>
-      <div id="topicsAll"></div>
-    </div>
+    <div class="topics-wrap" id="topicsList"></div>
   </div>
 
-  <!-- ═══════════ CHAT SCREEN ═══════════ -->
+  <!-- ═══════ CHAT ═══════ -->
   <div class="screen" id="chatScreen">
     <div class="app-header">
       <div class="back" onclick="goToTopics()">←</div>
       <div class="title" id="chatTitle">Topik</div>
-      <div class="action" onclick="showUsers()">👥</div>
+      <div class="action" onclick="showUsersModal()">👥</div>
     </div>
-    <div class="online-users" id="onlineUsers"></div>
-    <div class="chat-messages" id="chatMessages">
-      <div class="empty-state">
-        <div class="icon">💬</div>
-        <p>Belum ada pesan. Mulai obrolan pertama!</p>
-      </div>
-    </div>
+    <div class="online-bar" id="onlineBar"></div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div id="typingInd" class="typing-indicator"></div>
     <div class="chat-input">
-      <textarea id="msgInput" placeholder="Tulis pesan..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>➤</button>
+      <textarea id="msgInput" placeholder="Tulis pesan..." rows="1" onkeydown="hk(event)" oninput="ar(this)"></textarea>
+      <button class="snd" id="sendBtn" onclick="sendMessage()" disabled>➤</button>
     </div>
   </div>
 
-  <!-- ═══════════ NEW TOPIC MODAL ═══════════ -->
+  <!-- ═══════ NEW TOPIC MODAL ═══════ -->
   <div class="modal" id="newTopicModal">
     <div class="modal-box">
       <h3>✨ Bikin Topik Baru</h3>
-      <div class="input-group">
-        <label>Emoji</label>
-        <input type="text" id="topicEmoji" placeholder="⚽" maxlength="2" style="font-size:24px;text-align:center;width:70px">
-      </div>
-      <div class="input-group">
-        <label>Nama Topik</label>
-        <input type="text" id="topicName" placeholder="Misal: Sepak Bola" maxlength="30">
-      </div>
-      <div class="input-group">
-        <label>Deskripsi singkat</label>
-        <input type="text" id="topicDesc" placeholder="Ngobrolin bola sepuasnya!" maxlength="50">
-      </div>
+      <div class="input-group"><label>Emoji</label><input type="text" id="topicEmoji" placeholder="💬" maxlength="2" style="font-size:24px;text-align:center;width:70px"></div>
+      <div class="input-group"><label>Nama Topik</label><input type="text" id="topicName" placeholder="Misal: Sepak Bola" maxlength="30"></div>
+      <div class="input-group"><label>Deskripsi singkat</label><input type="text" id="topicDesc" placeholder="Ngobrolin bola sepuasnya!" maxlength="50"></div>
       <button class="btn btn-primary" onclick="createTopic()">✅ Bikin Topik</button>
       <button class="btn btn-outline" onclick="closeModal('newTopicModal')">Batal</button>
     </div>
   </div>
 
-  <!-- ═══════════ USERS MODAL ═══════════ -->
+  <!-- ═══════ USERS MODAL ═══════ -->
   <div class="modal" id="usersModal">
     <div class="modal-box">
       <h3>👥 Online di Topik Ini</h3>
-      <div id="usersModalList" style="max-height:300px;overflow-y:auto;"></div>
+      <div id="usersList" style="max-height:300px;overflow-y:auto;"></div>
       <button class="btn btn-outline" onclick="closeModal('usersModal')" style="margin-top:12px;">Tutup</button>
     </div>
   </div>
 
 </div>
-
 <div class="toast" id="toast" style="display:none;"></div>
 
 <script>
 // ═══════════════════════════════════════════
-// DATA STORE (localStorage)
+// FIREBASE INIT
 // ═══════════════════════════════════════════
-const LS_TOPICS = 'curhatyuk_topics';
-const LS_MSGS = 'curhatyuk_msgs';
-const LS_USER = 'curhatyuk_user';
+const firebaseConfig = {
+  apiKey: "AIzaSyBrlu-zqm8xWqH2BxXsW2F_0Jg4fDyZZRA",
+  authDomain: "curhatyuk-294f0.firebaseapp.com",
+  databaseURL: "https://curhatyuk-294f0-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "curhatyuk-294f0",
+  storageBucket: "curhatyuk-294f0.firebasestorage.app",
+  messagingSenderId: "74402594391",
+  appId: "1:74402594391:web:f11f0dfb0a1a14e5ce6d12"
+};
 
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
 let currentUser = null;
 let currentTopic = null;
+let messagesRef = null;
+let onlineRef = null;
+let typingRef = null;
+let presenceRef = null;
+let connectedRef = null;
+const userColors = ['#e74c3c','#e67e22','#f39c12','#2ecc71','#1abc9c','#3498db','#9b59b6','#e91e63','#00bcd4','#ff5722','#795548','#607d8b','#16a085','#c0392b','#8e44ad','#d35400'];
 
-// Default topics
-const defaultTopics = [
-  { id: 'sepakbola', emoji: '⚽', name: 'Sepak Bola', desc: 'Ngobrolin bola, Liga, tim favorit!', color: '#4a9e6b', active: 12 },
-  { id: 'politik', emoji: '🗳️', name: 'Politik & Isu', desc: 'Debat panas seputar politik terkini', color: '#c0392b', active: 8 },
-  { id: 'musik', emoji: '🎵', name: 'Musik & Lagu', desc: 'Rekomendasi lagu, genre, konser', color: '#8e44ad', active: 15 },
-  { id: 'anime', emoji: '🎬', name: 'Anime & Film', desc: 'Spoiler warning! Ngobrolin anime favorit', color: '#e67e22', active: 20 },
-  { id: 'kuliah', emoji: '🎓', name: 'Dunia Kuliah', desc: 'Tugas, dosen, skripsi — curhat bebas!', color: '#2980b9', active: 10 },
-  { id: 'relationship', emoji: '💔', name: 'Cinta & Patah Hati', desc: 'Curhat soal doi, mantan, atau gebetan', color: '#e74c8b', active: 25 },
-  { id: 'mentalhealth', emoji: '🧠', name: 'Mental Health', desc: 'Support group — cerita, dengerin, support', color: '#6c9a8b', active: 18 },
-  { id: 'game', emoji: '🎮', name: 'Gaming', desc: 'Valorant, ML, Genshin, semua game!', color: '#2c3e50', active: 22 },
-  { id: 'makanan', emoji: '🍜', name: 'Kuliner & Makanan', desc: 'Rekomendasi makanan enak se-Indonesia', color: '#d35400', active: 6 },
-  { id: 'teknologi', emoji: '💻', name: 'Teknologi & AI', desc: 'Bahas gadget, coding, AI terbaru', color: '#1a5276', active: 14 },
-  { id: 'random', emoji: '🎲', name: 'Random / Bebas', desc: 'Ngobrol apa aja — topik bebas!', color: '#7f8c8d', active: 30 },
-  { id: 'curhat', emoji: '🫂', name: 'Curhat Malam', desc: 'Tempat cerita sampe nangis bareng', color: '#5b4a6a', active: 28 },
-];
-
-function getTopics() {
-  let stored = localStorage.getItem(LS_TOPICS);
-  if (!stored) {
-    localStorage.setItem(LS_TOPICS, JSON.stringify(defaultTopics));
-    return defaultTopics;
-  }
-  return JSON.parse(stored);
+function hashColor(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
+  return userColors[Math.abs(h) % userColors.length];
 }
 
-function saveTopics(topics) {
-  localStorage.setItem(LS_TOPICS, JSON.stringify(topics));
-}
-
-function getMessages(topicId) {
-  let all = localStorage.getItem(LS_MSGS);
-  if (!all) return [];
-  let msgs = JSON.parse(all);
-  return msgs[topicId] || [];
-}
-
-function saveMessages(topicId, msgs) {
-  let all = localStorage.getItem(LS_MSGS);
-  let data = all ? JSON.parse(all) : {};
-  data[topicId] = msgs.slice(-200); // keep last 200
-  localStorage.setItem(LS_MSGS, JSON.stringify(data));
-}
-
-// ═══════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════
-function genId() { return Date.now().toString(36) + Math.random().toString(36).substr(2, 5); }
-
-function avatarColor(name) {
-  const colors = ['#e74c3c','#e67e22','#f1c40f','#2ecc71','#1abc9c','#3498db','#9b59b6','#e91e63','#00bcd4','#ff5722','#795548','#607d8b'];
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  return colors[Math.abs(hash) % colors.length];
-}
-
-function avatarInitial(name) {
-  return name.charAt(0).toUpperCase();
-}
-
-function timeStr() {
-  let d = new Date();
-  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
-}
+function genId() { return db.ref().push().key; }
 
 function toast(text) {
   let t = document.getElementById('toast');
-  t.textContent = text;
-  t.style.display = 'block';
+  t.textContent = text; t.style.display = 'block';
   setTimeout(() => t.style.display = 'none', 2000);
 }
 
@@ -514,70 +456,145 @@ function showScreen(id) {
   document.getElementById(id).classList.add('active');
 }
 
-function closeModal(id) {
-  document.getElementById(id).classList.remove('active');
-}
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
 // ═══════════════════════════════════════════
 // LOGIN
 // ═══════════════════════════════════════════
 function login() {
   let name = document.getElementById('usernameInput').value.trim();
-  if (!name) { toast('Isi nama dulu ya! 😊'); return; }
-  if (name.length < 2) { toast('Nama minimal 2 karakter ya'); return; }
-  
+  if (!name || name.length < 2) { toast('Isi nama dulu ya (min 2 karakter) 😊'); return; }
+
+  let btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span> Connecting...';
+
+  let uid = genId();
   currentUser = {
-    id: genId(),
+    id: uid,
     name: name,
-    color: avatarColor(name),
-    initial: avatarInitial(name)
+    color: hashColor(name),
+    initial: name.charAt(0).toUpperCase()
   };
-  localStorage.setItem(LS_USER, JSON.stringify(currentUser));
+
+  // Save user to DB
+  db.ref('users/' + uid).set({
+    name: currentUser.name,
+    color: currentUser.color,
+    lastSeen: firebase.database.ServerValue.TIMESTAMP
+  });
+
+  // Setup presence (online/offline)
+  connectedRef = db.ref('.info/connected');
+  presenceRef = db.ref('users/' + uid + '/online');
+  
+  connectedRef.on('value', snap => {
+    if (snap.val() === true) {
+      presenceRef.set(true);
+      presenceRef.onDisconnect().remove();
+    }
+  });
+
+  // Save locally
+  localStorage.setItem('curhatyuk_user', JSON.stringify(currentUser));
+
+  btn.disabled = false;
+  btn.textContent = '🚀 Masuk & Ngobrol';
   
   showScreen('topicsScreen');
-  renderTopics();
+  loadTopics();
 }
 
-// Auto-login if user exists
+// Auto-restore session
 (function() {
-  let stored = localStorage.getItem(LS_USER);
+  let stored = localStorage.getItem('curhatyuk_user');
   if (stored) {
     currentUser = JSON.parse(stored);
     document.getElementById('usernameInput').value = currentUser.name;
+    
+    // Re-establish presence
+    connectedRef = db.ref('.info/connected');
+    presenceRef = db.ref('users/' + currentUser.id + '/online');
+    connectedRef.on('value', snap => {
+      if (snap.val() === true) {
+        presenceRef.set(true);
+        presenceRef.onDisconnect().remove();
+      }
+    });
   }
 })();
 
 // ═══════════════════════════════════════════
-// TOPICS
+// TOPICS (from Firebase)
 // ═══════════════════════════════════════════
-function renderTopics() {
-  let topics = getTopics();
-  
-  // Sort by active count
-  let popular = [...topics].sort((a,b) => b.active - a.active).slice(0, 6);
-  document.getElementById('topicsPopular').innerHTML = popular.map(t => topicCard(t)).join('');
-  document.getElementById('topicsAll').innerHTML = topics.map(t => topicCard(t)).join('');
-  
-  // Add click handlers
-  document.querySelectorAll('.topic-card').forEach(card => {
-    card.addEventListener('click', () => {
-      let topicId = card.dataset.topicId;
-      openTopic(topicId);
+const defaultTopics = [
+  { id: 'sepakbola', emoji: '⚽', name: 'Sepak Bola', desc: 'Ngobrolin bola, Liga, tim favorit!', color: '#4a9e6b' },
+  { id: 'politik', emoji: '🗳️', name: 'Politik & Isu', desc: 'Debat panas seputar politik terkini', color: '#c0392b' },
+  { id: 'musik', emoji: '🎵', name: 'Musik & Lagu', desc: 'Rekomendasi lagu, genre, konser', color: '#8e44ad' },
+  { id: 'anime', emoji: '🎬', name: 'Anime & Film', desc: 'Spoiler warning! Ngobrolin anime favorit', color: '#e67e22' },
+  { id: 'kuliah', emoji: '🎓', name: 'Dunia Kuliah', desc: 'Tugas, dosen, skripsi — curhat bebas!', color: '#2980b9' },
+  { id: 'cinta', emoji: '💔', name: 'Cinta & Patah Hati', desc: 'Curhat soal doi, mantan, atau gebetan', color: '#e74c8b' },
+  { id: 'mentalhealth', emoji: '🧠', name: 'Mental Health', desc: 'Support group — cerita, dengerin, support', color: '#6c9a8b' },
+  { id: 'game', emoji: '🎮', name: 'Gaming', desc: 'Valorant, ML, Genshin, semua game!', color: '#2c3e50' },
+  { id: 'makanan', emoji: '🍜', name: 'Kuliner & Makanan', desc: 'Rekomendasi makanan enak se-Indonesia', color: '#d35400' },
+  { id: 'teknologi', emoji: '💻', name: 'Teknologi & AI', desc: 'Bahas gadget, coding, AI terbaru', color: '#1a5276' },
+  { id: 'random', emoji: '🎲', name: 'Random / Bebas', desc: 'Ngobrol apa aja — topik bebas!', color: '#7f8c8d' },
+  { id: 'curhat', emoji: '🫂', name: 'Curhat Malam', desc: 'Tempat cerita sampe nangis bareng', color: '#5b4a6a' },
+];
+
+function loadTopics() {
+  db.ref('topics').once('value').then(snap => {
+    let topics = snap.val();
+    if (!topics) {
+      // Seed default topics
+      let updates = {};
+      defaultTopics.forEach(t => {
+        updates[t.id] = { emoji: t.emoji, name: t.name, desc: t.desc, color: t.color, createdAt: firebase.database.ServerValue.TIMESTAMP };
+      });
+      db.ref('topics').set(updates);
+      renderTopics(defaultTopics);
+    } else {
+      let arr = Object.entries(topics).map(([id, t]) => ({ id, ...t }));
+      arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      renderTopics(arr);
+    }
+  });
+
+  // Listen for new topics
+  db.ref('topics').on('child_added', snap => {
+    // Refresh list
+    db.ref('topics').once('value').then(s => {
+      let topics = s.val();
+      if (topics) {
+        let arr = Object.entries(topics).map(([id, t]) => ({ id, ...t }));
+        arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        renderTopics(arr);
+      }
     });
   });
 }
 
+function renderTopics(topics) {
+  let popular = [...topics].sort((a,b) => (b.active||0) - (a.active||0)).slice(0, 7);
+  
+  document.getElementById('topicsList').innerHTML = `
+    <h3>🔥 Populer</h3>
+    ${popular.map(t => topicCard(t)).join('')}
+    <h3>📚 Semua Topik</h3>
+    ${topics.map(t => topicCard(t)).join('')}
+  `;
+}
+
 function topicCard(t) {
   return `
-    <div class="topic-card" data-topic-id="${t.id}">
-      <div class="topic-icon" style="background:${t.color}20;color:${t.color}">${t.emoji}</div>
-      <div class="topic-info">
-        <div class="topic-name">${t.name}</div>
-        <div class="topic-desc">${t.desc}</div>
+    <div class="topic-card" onclick="openTopic('${t.id}')">
+      <div class="tc-icon" style="background:${t.color||'#999'}20;color:${t.color||'#999'}">${t.emoji||'💬'}</div>
+      <div class="tc-info">
+        <div class="tc-name">${t.name}</div>
+        <div class="tc-desc">${t.desc||''}</div>
       </div>
-      <div class="topic-meta">
-        <div class="topic-count">👥 ${t.active}</div>
-        <div class="topic-active"></div>
+      <div class="tc-meta">
+        <div class="tc-count">👥 ${t.active||0}</div>
       </div>
     </div>`;
 }
@@ -596,117 +613,151 @@ function createTopic() {
   
   if (!name) { toast('Isi nama topik dulu!'); return; }
   
-  let topics = getTopics();
-  let id = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  let id = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') + '-' + Date.now().toString(36);
+  let color = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
   
-  // Check duplicate
-  if (topics.find(t => t.id === id)) {
-    id = id + '-' + Date.now().toString(36);
-  }
-  
-  let newTopic = {
-    id: id,
-    emoji: emoji,
-    name: name,
-    desc: desc,
-    color: '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0'),
+  db.ref('topics/' + id).set({
+    emoji, name, desc, color,
+    createdAt: firebase.database.ServerValue.TIMESTAMP,
     active: 1
-  };
+  });
   
-  topics.unshift(newTopic);
-  saveTopics(topics);
   closeModal('newTopicModal');
-  renderTopics();
   toast('✅ Topik baru dibuat!');
 }
 
 // ═══════════════════════════════════════════
-// CHAT
+// CHAT (Real-time via Firebase)
 // ═══════════════════════════════════════════
 function openTopic(topicId) {
-  let topics = getTopics();
-  let topic = topics.find(t => t.id === topicId);
-  if (!topic) return;
+  if (!currentUser) return;
   
-  currentTopic = topic;
-  document.getElementById('chatTitle').textContent = topic.emoji + ' ' + topic.name;
-  showScreen('chatScreen');
-  
-  // Add system message if first time
-  let msgs = getMessages(topicId);
-  if (msgs.length === 0) {
-    msgs.push({
-      id: genId(),
-      type: 'system',
-      text: `Selamat datang di #${topic.name}! 🎉 Mulai obrolan pertama yuk~`,
-      time: timeStr()
+  // Clean up previous listeners
+  if (messagesRef) messagesRef.off();
+  if (typingRef) typingRef.off();
+  if (onlineRef) onlineRef.off();
+
+  db.ref('topics/' + topicId).once('value').then(snap => {
+    let topic = snap.val();
+    if (!topic) { toast('Topik tidak ditemukan'); return; }
+    
+    currentTopic = { id: topicId, ...topic };
+    document.getElementById('chatTitle').textContent = (topic.emoji||'💬') + ' ' + topic.name;
+    document.getElementById('chatMessages').innerHTML = '';
+    document.getElementById('onlineBar').innerHTML = '';
+    
+    showScreen('chatScreen');
+    
+    // Track online users in this topic
+    onlineRef = db.ref('topic_presence/' + topicId + '/' + currentUser.id);
+    onlineRef.set({
+      name: currentUser.name,
+      color: currentUser.color,
+      timestamp: firebase.database.ServerValue.TIMESTAMP
     });
-    saveMessages(topicId, msgs);
-  }
-  
-  // Update active count
-  topic.active = Math.min(99, topic.active + 1);
-  saveTopics(topics);
-  
-  renderChat();
-  scrollToBottom();
-  document.getElementById('msgInput').focus();
+    onlineRef.onDisconnect().remove();
+    
+    // Listen for online users
+    db.ref('topic_presence/' + topicId).on('value', snap => {
+      renderOnlineUsers(snap.val() || {});
+    });
+    
+    // Update active count
+    db.ref('topic_presence/' + topicId).once('value').then(s => {
+      let count = s.numChildren();
+      db.ref('topics/' + topicId + '/active').set(count);
+    });
+    
+    // Listen for messages
+    messagesRef = db.ref('messages/' + topicId);
+    messagesRef.off(); // ensure clean
+    messagesRef.limitToLast(50).on('child_added', snap => {
+      renderMessage(snap.val(), snap.key);
+      scrollToBottom();
+    });
+    
+    // Listen for typing
+    typingRef = db.ref('typing/' + topicId + '/' + currentUser.id);
+    db.ref('typing/' + topicId).on('value', snap => {
+      let typers = snap.val() || {};
+      let names = Object.entries(typers)
+        .filter(([uid, v]) => uid !== currentUser.id && v)
+        .map(([uid, v]) => v.name);
+      let el = document.getElementById('typingInd');
+      if (names.length > 0) {
+        el.textContent = names.slice(0,2).join(', ') + (names.length>2?' & lainnya':'') + ' sedang mengetik...';
+      } else {
+        el.textContent = '';
+      }
+    });
+    
+    document.getElementById('msgInput').focus();
+  });
 }
 
-function renderChat() {
-  if (!currentTopic) return;
-  let msgs = getMessages(currentTopic.id);
+function renderMessage(msg, msgId) {
+  if (!currentUser) return;
   let container = document.getElementById('chatMessages');
   
-  if (msgs.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="icon">💬</div><p>Belum ada pesan. Mulai obrolan pertama!</p></div>';
+  // Check if already rendered
+  if (document.getElementById('msg-' + msgId)) return;
+  
+  if (msg.type === 'system') {
+    let div = document.createElement('div');
+    div.className = 'sys';
+    div.id = 'msg-' + msgId;
+    div.textContent = msg.text || '';
+    container.appendChild(div);
     return;
   }
   
-  container.innerHTML = msgs.map(m => {
-    if (m.type === 'system') {
-      return `<div class="system-msg">${m.text} <span style="font-size:10px">${m.time}</span></div>`;
-    }
-    let isMe = m.senderId === currentUser.id;
-    let cls = isMe ? 'me' : 'other';
-    let senderName = isMe ? '' : `<div class="sender">${m.senderName}</div>`;
-    let col = m.senderColor || '#ccc';
-    
-    // Check for emoji-only messages (1-3 emojis)
-    if (/^[\p{Emoji}\u200d]+$/u.test(m.text.trim()) && m.text.trim().length <= 8) {
-      return `
-        <div class="msg ${cls}">
-          ${!isMe ? `<div class="avatar" style="background:${col}">${(m.senderName||'?')[0].toUpperCase()}</div>` : ''}
-          <div class="bubble">
-            ${senderName}
-            <div class="emoji-rx">${m.text}</div>
-            <div class="time">${m.time}</div>
-          </div>
-          ${isMe ? `<div class="avatar" style="background:${currentUser.color}">${currentUser.initial}</div>` : ''}
-        </div>`;
-    }
-    
-    return `
-      <div class="msg ${cls}">
-        ${!isMe ? `<div class="avatar" style="background:${col}">${(m.senderName||'?')[0].toUpperCase()}</div>` : ''}
-        <div class="bubble">
-          ${senderName}
-          ${m.text}
-          <div class="time">${m.time}</div>
-        </div>
-        ${isMe ? `<div class="avatar" style="background:${currentUser.color}">${currentUser.initial}</div>` : ''}
-      </div>`;
-  }).join('');
+  let isMe = msg.senderId === currentUser.id;
+  let cls = isMe ? 'me' : 'other';
+  let senderName = isMe ? '' : `<div class="sdr">${msg.senderName||'Anon'}</div>`;
+  let col = msg.senderColor || '#999';
   
-  // Online users
-  let uniqueSenders = [...new Set(msgs.filter(m => m.senderId).map(m => JSON.stringify({id:m.senderId, name:m.senderName, color:m.senderColor})))].map(s => JSON.parse(s));
-  if (!uniqueSenders.find(u => u.id === currentUser.id)) {
-    uniqueSenders.push({id: currentUser.id, name: currentUser.name, color: currentUser.color});
+  let text = (msg.text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  
+  // Big emoji detection
+  if (/^[\p{Emoji}\u200d\s]+$/u.test(msg.text||'') && (msg.text||'').trim().length <= 8) {
+    let div = document.createElement('div');
+    div.className = 'msg ' + cls;
+    div.id = 'msg-' + msgId;
+    div.innerHTML = `
+      ${!isMe ? `<div class="avt" style="background:${col}">${(msg.senderName||'?')[0].toUpperCase()}</div>` : ''}
+      <div class="bbl">
+        ${senderName}
+        <div class="big-emoji">${msg.text}</div>
+        <div class="tm">${msg.time||''}</div>
+      </div>
+      ${isMe ? `<div class="avt" style="background:${currentUser.color}">${currentUser.initial}</div>` : ''}
+    `;
+    container.appendChild(div);
+    return;
   }
-  document.getElementById('onlineUsers').innerHTML = uniqueSenders.map(u => `
-    <div class="online-user" title="${u.name}">
-      <div class="dot" style="background:${u.color}">${u.name[0].toUpperCase()}</div>
-      <div class="name">${u.name}</div>
+  
+  let div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.id = 'msg-' + msgId;
+  div.innerHTML = `
+    ${!isMe ? `<div class="avt" style="background:${col}">${(msg.senderName||'?')[0].toUpperCase()}</div>` : ''}
+    <div class="bbl">
+      ${senderName}
+      ${text}
+      <div class="tm">${msg.time||''}</div>
+    </div>
+    ${isMe ? `<div class="avt" style="background:${currentUser.color}">${currentUser.initial}</div>` : ''}
+  `;
+  container.appendChild(div);
+}
+
+function renderOnlineUsers(users) {
+  let bar = document.getElementById('onlineBar');
+  let arr = Object.entries(users);
+  bar.innerHTML = arr.map(([uid, u]) => `
+    <div class="on-u" title="${u.name}">
+      <div class="on-dot" style="background:${u.color||'#999'}">${(u.name||'?')[0].toUpperCase()}</div>
+      <span>${u.name||'?'}</span>
     </div>
   `).join('');
 }
@@ -717,67 +768,83 @@ function sendMessage() {
   let text = input.value.trim();
   if (!text) return;
   
-  let msgs = getMessages(currentTopic.id);
-  msgs.push({
-    id: genId(),
+  let time = new Date();
+  let timeStr = time.getHours().toString().padStart(2,'0') + ':' + time.getMinutes().toString().padStart(2,'0');
+  
+  db.ref('messages/' + currentTopic.id).push({
     type: 'message',
     senderId: currentUser.id,
     senderName: currentUser.name,
     senderColor: currentUser.color,
     text: text,
-    time: timeStr()
+    time: timeStr,
+    timestamp: firebase.database.ServerValue.TIMESTAMP
   });
-  saveMessages(currentTopic.id, msgs);
+  
+  // Clear typing
+  typingRef.set(false);
   
   input.value = '';
   document.getElementById('sendBtn').disabled = true;
-  renderChat();
-  scrollToBottom();
 }
 
-function handleKey(e) {
+function hk(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     sendMessage();
   }
-  // Enable/disable send button
   setTimeout(() => {
-    document.getElementById('sendBtn').disabled = !document.getElementById('msgInput').value.trim();
+    let inp = document.getElementById('msgInput');
+    document.getElementById('sendBtn').disabled = !inp.value.trim();
+    
+    // Typing indicator
+    if (currentTopic && typingRef) {
+      typingRef.set(inp.value.trim() ? { name: currentUser.name, timestamp: firebase.database.ServerValue.TIMESTAMP } : false);
+    }
   }, 50);
 }
 
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-}
+function ar(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
 
 function scrollToBottom() {
-  let container = document.getElementById('chatMessages');
-  setTimeout(() => {
-    container.scrollTop = container.scrollHeight;
-  }, 100);
+  let c = document.getElementById('chatMessages');
+  // Only auto-scroll if user is near bottom
+  let nearBottom = c.scrollHeight - c.scrollTop - c.clientHeight < 150;
+  if (nearBottom) {
+    setTimeout(() => c.scrollTop = c.scrollHeight, 50);
+  }
 }
 
 function goToTopics() {
+  if (messagesRef) messagesRef.off();
+  if (typingRef) { typingRef.set(false); typingRef = null; }
+  if (onlineRef) { onlineRef.remove(); onlineRef = null; }
+  
+  if (currentTopic) {
+    db.ref('topic_presence/' + currentTopic.id).once('value').then(s => {
+      let count = s.numChildren();
+      db.ref('topics/' + currentTopic.id + '/active').set(Math.max(0, count - 1));
+    });
+  }
+  
   currentTopic = null;
   showScreen('topicsScreen');
-  renderTopics();
+  loadTopics();
 }
 
-function showUsers() {
+function showUsersModal() {
   if (!currentTopic) return;
-  let msgs = getMessages(currentTopic.id);
-  let uniqueSenders = [...new Set(msgs.filter(m => m.senderId).map(m => JSON.stringify({id:m.senderId, name:m.senderName, color:m.senderColor})))].map(s => JSON.parse(s));
-  
-  document.getElementById('usersModalList').innerHTML = uniqueSenders.map(u => `
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
-      <div style="width:36px;height:36px;border-radius:50%;background:${u.color};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">${u.name[0].toUpperCase()}</div>
-      <span style="font-weight:600;">${u.name}</span>
-      <span style="font-size:10px;color:var(--online);margin-left:auto;">🟢 online</span>
-    </div>
-  `).join('') || '<p style="color:var(--sub);font-size:13px;">Belum ada yang online</p>';
-  
-  document.getElementById('usersModal').classList.add('active');
+  db.ref('topic_presence/' + currentTopic.id).once('value').then(snap => {
+    let users = snap.val() || {};
+    document.getElementById('usersList').innerHTML = Object.entries(users).map(([uid, u]) => `
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #eee;">
+        <div style="width:36px;height:36px;border-radius:50%;background:${u.color};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">${u.name[0].toUpperCase()}</div>
+        <span style="font-weight:600;">${u.name}</span>
+        ${uid === currentUser.id ? '<span style="font-size:10px;color:var(--sub);margin-left:auto;">(kamu)</span>' : '<span style="font-size:10px;color:var(--online);margin-left:auto;">🟢 online</span>'}
+      </div>
+    `).join('') || '<p style="color:var(--sub);font-size:13px;">Belum ada yang online</p>';
+    document.getElementById('usersModal').classList.add('active');
+  });
 }
 
 // ═══════════════════════════════════════════
@@ -786,13 +853,10 @@ function showUsers() {
 document.getElementById('msgInput').addEventListener('input', function() {
   document.getElementById('sendBtn').disabled = !this.value.trim();
 });
-
-// Enter on login
 document.getElementById('usernameInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') login();
 });
 
-renderTopics();
 </script>
 </body>
 </html>
