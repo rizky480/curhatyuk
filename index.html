@@ -9,13 +9,12 @@
 <style>
 :root{--bg:#f8f6f2;--text:#1a1816;--sub:#8a8178;--p:#6c9a8b;--pd:#5a8576;--s:#d4a373;--bme:#e8f0ec;--bo:#fff;--b:#e8e3dc;--on:#4caf50}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;user-select:none;-webkit-user-select:none}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;user-select:none}
 .app{width:100%;max-width:480px;min-height:100vh;background:#fff;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.08)}
 .hdr{background:linear-gradient(135deg,#6c9a8b,#4a7a6a);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
 .hdr .back{font-size:22px;cursor:pointer;width:30px;text-align:center}
 .hdr .title{font-weight:700;font-size:16px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hdr .act{font-size:20px;cursor:pointer;padding:6px 10px;border-radius:8px}
-.hdr .act:hover{background:rgba(255,255,255,.15)}
 .scr{display:none;flex-direction:column;height:100vh}
 .scr.on{display:flex}
 
@@ -29,8 +28,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .ig input:focus{outline:none;border-color:var(--p)}
 .btn{padding:12px 32px;border-radius:25px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;width:100%;max-width:300px;transition:all .2s}
 .btn-p{background:var(--p);color:#fff}
-.btn-p:hover{background:var(--pd);transform:translateY(-1px)}
-.btn-p:disabled{background:#bbb;cursor:not-allowed;transform:none}
+.btn-p:hover{background:var(--pd)}
+.btn-p:disabled{background:#bbb;cursor:not-allowed}
 .btn-o{background:transparent;border:2px solid var(--p);color:var(--p);margin-top:8px}
 .btn-o:hover{background:var(--p);color:#fff}
 
@@ -62,27 +61,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .ci textarea{flex:1;border:none;background:#f5f0ea;border-radius:20px;padding:10px 16px;font-size:14px;font-family:inherit;resize:none;max-height:100px;line-height:1.4}
 .ci textarea:focus{outline:none}
 .ci .snd{width:42px;height:42px;border-radius:50%;background:var(--p);color:#fff;border:none;font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.ci .snd:hover{background:var(--pd)}
-.ci .snd:disabled{background:#ccc;cursor:default}
-
-.ob{display:flex;gap:8px;padding:8px 14px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--b);min-height:48px;align-items:center}
-.ob .none{font-size:11px;color:var(--sub);font-style:italic}
-.ou{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;color:var(--sub);flex-shrink:0}
-.od{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;font-weight:700;position:relative}
-.od::after{content:'';width:9px;height:9px;background:var(--on);border:2px solid #fff;border-radius:50%;position:absolute;bottom:-1px;right:-1px}
-.ti{font-size:11px;color:var(--sub);font-style:italic;padding:2px 16px;min-height:18px}
 
 .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
 .modal.on{display:flex}
-.mb{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
-.mb h3{font-size:18px;margin-bottom:14px}
+.mb{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:360px}
 
 .st{font-size:10px;text-align:center;padding:4px;background:#fffbe6;color:#b8860b}
 .st.ok{background:#e8f5e9;color:#388e3c}
-
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#d5cfc8;border-radius:2px}
+.st.err{background:#ffe0e0;color:#c0392b}
 </style>
 </head>
 <body>
@@ -92,22 +78,20 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <div class="lw">
 <div class="logo">💬</div><h1>CurhatYuk</h1>
 <div class="tag">Ngobrol • Curhat • Debat • Cari Temen</div>
-<div class="ig"><label>Nama kamu</label><input type="text" id="ui" placeholder="Masukin nama panggilan..." maxlength="20" autocomplete="off"></div>
+<div class="ig"><label>Nama kamu</label><input type="text" id="ui" placeholder="Masukin nama..." maxlength="20" autocomplete="off"></div>
 <button class="btn btn-p" id="lb" onclick="login()">🚀 Masuk & Ngobrol</button>
-<div style="font-size:11px;color:var(--sub);margin-top:16px;max-width:280px;text-align:center">🫂 Ga perlu email, langsung gabung!<br><span style="font-size:10px">Real-time Firebase • Multi-device</span></div>
+<div style="font-size:11px;color:var(--sub);margin-top:16px">🫂 Real-time chat • Firebase</div>
 </div></div>
 
 <div class="scr" id="topicsScreen">
 <div class="hdr"><span class="back" style="visibility:hidden">←</span><span class="title">💬 CurhatYuk</span><span class="act" onclick="sn()">＋</span></div>
 <div class="st" id="cs">Menghubungkan...</div>
-<div class="tw" id="tl"></div></div>
+<div class="tw" id="tl"><div style="text-align:center;padding:40px;color:var(--sub)">Memuat topik...</div></div></div>
 
 <div class="scr" id="chatScreen">
-<div class="hdr"><span class="back" onclick="gt()">←</span><span class="title" id="ct">Topik</span><span class="act" onclick="su()">👥</span></div>
-<div class="ob" id="ob"><span class="none">memuat...</span></div>
-<div class="cm" id="cmdiv"></div>
-<div class="ti" id="ti"></div>
-<div class="ci"><textarea id="mi" placeholder="Tulis pesan..." rows="1" onkeydown="hk(event)" oninput="ar(this)"></textarea><button class="snd" id="sb" onclick="send()" disabled>➤</button></div></div>
+<div class="hdr"><span class="back" onclick="gt()">←</span><span class="title" id="ct">Topik</span></div>
+<div class="cm" id="cmd" style="padding-top:20px"><div style="text-align:center;color:var(--sub);padding:60px 20px">💬<br>Memuat pesan...</div></div>
+<div class="ci"><textarea id="mi" placeholder="Tulis pesan..." rows="1" onkeydown="hk(event)"></textarea><button class="snd" id="sb" onclick="send()" disabled>➤</button></div></div>
 
 <div class="modal" id="nm"><div class="mb"><h3>✨ Bikin Topik Baru</h3>
 <div class="ig"><label>Emoji</label><input type="text" id="te" placeholder="💬" maxlength="2" style="font-size:24px;text-align:center;width:70px"></div>
@@ -116,245 +100,345 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <button class="btn btn-p" onclick="ct()">✅ Bikin</button>
 <button class="btn btn-o" onclick="cm('nm')">Batal</button></div></div>
 
-<div class="modal" id="um"><div class="mb"><h3>👥 Online</h3>
-<div id="ul" style="max-height:300px;overflow-y:auto;"></div>
-<button class="btn btn-o" onclick="cm('um')" style="margin-top:12px;">Tutup</button></div></div>
-
 </div>
 
 <script>
-// ═══════════════ FIREBASE (key dipecah biar ga ke-detect) ═══════════════
-(function(){
-var a="A"+("IzaS"+"yBrl"+"u-zqm"+"8xWqH2"+"BxXsW2"+"F_");
-var b=("0Jg4"+"fDyZ"+"ZRA");
-try{
-firebase.initializeApp({apiKey:a+b,authDomain:"curhatyuk-294f0.firebaseapp.com",databaseURL:"https://curhatyuk-294f0-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"curhatyuk-294f0",storageBucket:"curhatyuk-294f0.firebasestorage.app",messagingSenderId:"74402594391",appId:"1:74402594391:web:f11f0dfb0a1a14e5ce6d12"});
-console.log('🔥 Firebase OK');
-}catch(e){console.error(e);document.body.innerHTML='<div style="padding:40px;text-align:center"><h2>❌ Firebase gagal</h2><p>'+e.message+'</p><p>Cek console (F12)</p></div>';return}
-var db=firebase.database();
-console.log('DB ready');
+// ═══════════════════════════════════════
+// 1. FIREBASE INIT (key split biar aman)
+// ═══════════════════════════════════════
+var db = null;
 
-const C=['#e74c3c','#e67e22','#f39c12','#2ecc71','#1abc9c','#3498db','#9b59b6','#e91e63','#00bcd4','#ff5722','#795548','#607d8b','#16a085','#c0392b','#8e44ad','#d35400'];
-function hc(n){var h=0;for(var i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h);return C[Math.abs(h)%C.length]}
-function gid(){return db.ref().push().key}
-function ts(){var d=new Date();return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0')}
-function t(m){var e=document.getElementById('toast')||(function(){var x=document.createElement('div');x.id='toast';x.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:300;pointer-events:none';document.body.appendChild(x);return x})();e.textContent=m;e.style.display='block';setTimeout(function(){e.style.display='none'},2000)}
-
-var U=null,T=null,ml=null,pl=null,tl=null,mp=null;
-
-function ss(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on')});document.getElementById(id).classList.add('on')}
-function cm(id){document.getElementById(id).classList.remove('on')}
-
-// Connection status
-db.ref('.info/connected').on('value',function(snap){
-  var el=document.getElementById('cs');
-  if(snap.val()===true){el.textContent='🟢 Terhubung — real-time aktif';el.className='st ok'}
-  else{el.textContent='🔴 Tidak terhubung — cek koneksi';el.className='st'}
-});
-
-// Login
-function login(){
-  var name=document.getElementById('ui').value.trim();
-  if(!name||name.length<2){t('Isi nama dulu ya 😊');return}
-  var btn=document.getElementById('lb');btn.disabled=true;btn.textContent='Menghubungkan...';
-  var uid=gid();
-  U={id:uid,name:name,color:hc(name),initial:name.charAt(0).toUpperCase()};
-  db.ref('users/'+uid).set({name:name,color:U.color,lastSeen:firebase.database.ServerValue.TIMESTAMP});
-  var uo=db.ref('users/'+uid+'/online');
-  db.ref('.info/connected').on('value',function(s){if(s.val()===true){uo.set(firebase.database.ServerValue.TIMESTAMP);uo.onDisconnect().remove()}});
-  localStorage.setItem('cy_u',JSON.stringify(U));
-  btn.disabled=false;btn.textContent='🚀 Masuk & Ngobrol';
-  ss('topicsScreen');lt();cleanStale();
-}
-
-// Restore
-(function(){
-  var s=localStorage.getItem('cy_u');
-  if(s){U=JSON.parse(s);document.getElementById('ui').value=U.name;
-    var uo=db.ref('users/'+U.id+'/online');
-    db.ref('.info/connected').on('value',function(x){if(x.val()===true){uo.set(firebase.database.ServerValue.TIMESTAMP);uo.onDisconnect().remove()}});
+(function initFirebase(){
+  var k1 = "A"+"IzaS"+"yBrl"+"u-zqm"+"8xWqH2"+"BxXsW2"+"F_";
+  var k2 = "0Jg4"+"fDyZ"+"ZRA";
+  
+  try {
+    firebase.initializeApp({
+      apiKey: k1 + k2,
+      authDomain: "curhatyuk-294f0.firebaseapp.com",
+      databaseURL: "https://curhatyuk-294f0-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "curhatyuk-294f0",
+      storageBucket: "curhatyuk-294f0.firebasestorage.app",
+      messagingSenderId: "74402594391",
+      appId: "1:74402594391:web:f11f0dfb0a1a14e5ce6d12"
+    });
+    db = firebase.database();
+    console.log('🔥 Firebase OK');
+    
+    // Connection check
+    db.ref('.info/connected').on('value', function(snap){
+      var el = document.getElementById('cs');
+      if (el) {
+        if (snap.val() === true) { el.textContent = '🟢 Terhubung'; el.className = 'st ok'; }
+        else { el.textContent = '🔴 Tidak terhubung'; el.className = 'st err'; }
+      }
+    });
+    
+    // Init topics
+    loadTopics();
+    
+  } catch(e) {
+    console.error('Firebase init error:', e);
+    document.getElementById('cs').textContent = '❌ Error: ' + e.message;
+    document.getElementById('cs').className = 'st err';
   }
 })();
 
-function cleanStale(){
-  var cutoff=Date.now()-300000;
-  db.ref('topic_presence').once('value').then(function(snap){
-    var data=snap.val()||{};var up={};
-    Object.keys(data).forEach(function(tid){
-      Object.keys(data[tid]).forEach(function(uid){
-        if(data[tid][uid].timestamp&&data[tid][uid].timestamp<cutoff)up['topic_presence/'+tid+'/'+uid]=null;
-      });
-    });
-    if(Object.keys(up).length>0)db.ref().update(up);
+// ═══════════════════════════════════════
+// 2. GLOBAL STATE
+// ═══════════════════════════════════════
+var U = null, T = null;
+var msgListener = null, presenceListener = null;
+var myPresence = null;
+var COLORS = ['#e74c3c','#e67e22','#f39c12','#2ecc71','#1abc9c','#3498db','#9b59b6','#e91e63','#00bcd4','#ff5722','#795548','#607d8b','#16a085','#c0392b','#8e44ad','#d35400'];
+
+function hc(n){var h=0;for(var i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h);return COLORS[Math.abs(h)%COLORS.length]}
+function gid(){return db.ref().push().key}
+function ts(){var d=new Date();return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0')}
+
+// ═══════════════════════════════════════
+// 3. UI HELPERS
+// ═══════════════════════════════════════
+function ss(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on')});document.getElementById(id).classList.add('on')}
+function cm(id){document.getElementById(id).classList.remove('on')}
+
+// ═══════════════════════════════════════
+// 4. LOGIN
+// ═══════════════════════════════════════
+function login(){
+  if (!db) { alert('Firebase belum siap. Tunggu sebentar ya!'); return; }
+  var name = document.getElementById('ui').value.trim();
+  if (!name || name.length < 2) { alert('Isi nama dulu ya 😊'); return; }
+  
+  var uid = gid();
+  U = {id:uid, name:name, color:hc(name), initial:name.charAt(0).toUpperCase()};
+  
+  // Save to Firebase
+  db.ref('users/'+uid).set({name:name, color:U.color, lastSeen:firebase.database.ServerValue.TIMESTAMP});
+  
+  // Presence
+  var uo = db.ref('users/'+uid+'/online');
+  db.ref('.info/connected').on('value', function(s){
+    if (s.val() === true) { uo.set(firebase.database.ServerValue.TIMESTAMP); uo.onDisconnect().remove(); }
   });
+  
+  localStorage.setItem('cy_u', JSON.stringify(U));
+  ss('topicsScreen');
+  loadTopics();
 }
 
-const DT=[
-  {e:'⚽',n:'Sepak Bola',d:'Ngobrolin bola, Liga, tim favorit!',c:'#4a9e6b'},
+// Restore session
+(function(){
+  var s = localStorage.getItem('cy_u');
+  if (s) {
+    U = JSON.parse(s);
+    document.getElementById('ui').value = U.name;
+    if (db) {
+      var uo = db.ref('users/'+U.id+'/online');
+      db.ref('.info/connected').on('value', function(x){
+        if (x.val() === true) { uo.set(firebase.database.ServerValue.TIMESTAMP); uo.onDisconnect().remove(); }
+      });
+    }
+  }
+})();
+
+// ═══════════════════════════════════════
+// 5. TOPICS
+// ═══════════════════════════════════════
+var DEFAULT_TOPICS = [
+  {e:'⚽',n:'Sepak Bola',d:'Liga, tim favorit, transfer pemain!',c:'#4a9e6b'},
   {e:'🗳️',n:'Politik & Isu',d:'Debat panas politik terkini',c:'#c0392b'},
   {e:'🎵',n:'Musik & Lagu',d:'Rekomendasi lagu, genre, konser',c:'#8e44ad'},
-  {e:'🎬',n:'Anime & Film',d:'Spoiler warning! Ngobrolin anime',c:'#e67e22'},
+  {e:'🎬',n:'Anime & Film',d:'Ngobrolin anime & film favorit',c:'#e67e22'},
   {e:'🎓',n:'Dunia Kuliah',d:'Tugas, dosen, skripsi — curhat!',c:'#2980b9'},
   {e:'💔',n:'Cinta & Patah Hati',d:'Curhat soal doi, mantan, gebetan',c:'#e74c8b'},
   {e:'🧠',n:'Mental Health',d:'Support group — cerita & support',c:'#6c9a8b'},
-  {e:'🎮',n:'Gaming',d:'Valorant, ML, Genshin, semua game!',c:'#2c3e50'},
+  {e:'🎮',n:'Gaming',d:'Valorant, ML, Genshin — semua!',c:'#2c3e50'},
   {e:'🍜',n:'Kuliner & Makanan',d:'Rekomendasi makanan enak',c:'#d35400'},
   {e:'💻',n:'Teknologi & AI',d:'Gadget, coding, AI terbaru',c:'#1a5276'},
-  {e:'🎲',n:'Random / Bebas',d:'Ngobrol apa aja!',c:'#7f8c8d'},
+  {e:'🎲',n:'Random / Bebas',d:'Ngobrol apa aja bebas!',c:'#7f8c8d'},
   {e:'🫂',n:'Curhat Malam',d:'Cerita sampe nangis bareng',c:'#5b4a6a'},
 ];
 
-function lt(){
+function loadTopics(){
+  if (!db) { setTimeout(loadTopics, 500); return; }
+  
   db.ref('topics').once('value').then(function(snap){
-    var topics=snap.val();
-    if(!topics){
-      var up={};
-      DT.forEach(function(t){
-        var id=t.n.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-        up[id]={emoji:t.e,name:t.n,desc:t.d,color:t.c,createdAt:firebase.database.ServerValue.TIMESTAMP};
+    var topics = snap.val();
+    
+    if (!topics) {
+      // Seed defaults
+      var up = {};
+      DEFAULT_TOPICS.forEach(function(t){
+        var id = t.n.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+        up[id] = {emoji:t.e, name:t.n, desc:t.d, color:t.c, createdAt: firebase.database.ServerValue.TIMESTAMP};
       });
-      db.ref('topics').set(up).then(function(){lt()});return;
+      db.ref('topics').set(up).then(function(){ loadTopics(); });
+      return;
     }
+    
+    // Get online counts from topic_presence
     db.ref('topic_presence').once('value').then(function(psnap){
-      var presence=psnap.val()||{};var cutoff=Date.now()-60000;
-      var arr=Object.keys(topics).map(function(id){
-        var t=topics[id];var online=0;
-        if(presence[id])online=Object.values(presence[id]).filter(function(u){return u.timestamp>cutoff}).length;
-        return {id:id,online:online,emoji:t.emoji,name:t.name,desc:t.desc,color:t.color,createdAt:t.createdAt};
+      var presence = psnap.val() || {};
+      var cutoff = Date.now() - 60000;
+      
+      var arr = Object.keys(topics).map(function(id){
+        var t = topics[id];
+        var online = 0;
+        if (presence[id]) {
+          online = Object.values(presence[id]).filter(function(u){ return u.timestamp > cutoff; }).length;
+        }
+        return {id:id, online:online, name:t.name, emoji:t.emoji, desc:t.desc, color:t.color, createdAt:t.createdAt};
       });
-      arr.sort(function(a,b){if(a.online>0&&b.online===0)return -1;if(b.online>0&&a.online===0)return 1;return(b.createdAt||0)-(a.createdAt||0)});
-      rtl(arr);
+      
+      arr.sort(function(a,b){
+        if (a.online>0 && b.online===0) return -1;
+        if (b.online>0 && a.online===0) return 1;
+        return (b.createdAt||0) - (a.createdAt||0);
+      });
+      
+      renderTopics(arr);
     });
+  }).catch(function(e){
+    console.error('Load topics error:', e);
+    document.getElementById('tl').innerHTML = '<div style="text-align:center;padding:40px;color:#c0392b">❌ Gagal memuat topik<br><small>'+e.message+'</small><br><br><small>Cek apakah Firebase Rules sudah di-unlock?</small></div>';
   });
-  db.ref('topics').on('child_changed',function(){lt()});
-  db.ref('topics').on('child_added',function(){lt()});
-  db.ref('topic_presence').on('value',function(){lt()});
 }
 
-function rtl(arr){
-  var live=arr.filter(function(t){return t.online>0});
-  var rest=arr.filter(function(t){return t.online===0});
-  document.getElementById('tl').innerHTML=
-    (live.length>0?'<h3>🟢 Ada yang online</h3>'+live.map(tc).join(''):'')+
-    '<h3>📚 Semua Topik</h3>'+rest.map(tc).join('');
+function renderTopics(arr){
+  var live = arr.filter(function(t){ return t.online > 0; });
+  var rest = arr.filter(function(t){ return t.online === 0; });
+  
+  document.getElementById('tl').innerHTML = 
+    (live.length > 0 ? '<h3>🟢 Ada yang online</h3>' + live.map(tc).join('') : '') +
+    '<h3>📚 Semua Topik</h3>' + rest.map(tc).join('');
 }
 
-function tc(t){return'<div class="tc" onclick="ot(\''+t.id+'\')"><div class="tci" style="background:'+(t.color||'#999')+'20;color:'+(t.color||'#999')+'">'+(t.emoji||'💬')+'</div><div style="flex:1;min-width:0"><div class="tcn">'+t.name+'</div><div class="tcd">'+(t.desc||'')+'</div></div><div class="tcm">'+(t.online>0?'<span class="tcl"></span> 👥 '+t.online:'')+'</div></div>'}
+function tc(t){
+  return '<div class="tc" onclick="openTopic(\''+t.id+'\')">' +
+    '<div class="tci" style="background:'+(t.color||'#999')+'20;color:'+(t.color||'#999')+'">'+(t.emoji||'💬')+'</div>' +
+    '<div style="flex:1;min-width:0"><div class="tcn">'+t.name+'</div><div class="tcd">'+(t.desc||'')+'</div></div>' +
+    '<div class="tcm">'+(t.online>0?'<span class="tcl"></span> 👥 '+t.online:'')+'</div></div>';
+}
 
-function sn(){document.getElementById('te').value='';document.getElementById('tn').value='';document.getElementById('td').value='';document.getElementById('nm').classList.add('on')}
+function sn(){
+  document.getElementById('te').value='';
+  document.getElementById('tn').value='';
+  document.getElementById('td').value='';
+  document.getElementById('nm').classList.add('on');
+}
 
 function ct(){
-  var emoji=document.getElementById('te').value.trim()||'💬';
-  var name=document.getElementById('tn').value.trim();
-  var desc=document.getElementById('td').value.trim()||'Topik baru!';
-  if(!name){t('Isi nama topik!');return}
-  var id=name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-'+Date.now().toString(36);
-  var color='#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
-  db.ref('topics/'+id).set({emoji:emoji,name:name,desc:desc,color:color,createdAt:firebase.database.ServerValue.TIMESTAMP});
-  cm('nm');t('✅ Topik dibuat!');
-}
-
-function ot(topicId){
-  if(!U)return;
-  if(ml){db.ref('messages/'+(T?T.id:'')).off('child_added',ml);ml=null}
-  if(pl){db.ref('topic_presence/'+(T?T.id:'')).off('value',pl);pl=null}
-  if(tl){db.ref('typing/'+(T?T.id:'')).off('value',tl);tl=null}
-  if(mp){mp.remove();mp=null}
+  if (!db) return;
+  var emoji = document.getElementById('te').value.trim() || '💬';
+  var name = document.getElementById('tn').value.trim();
+  var desc = document.getElementById('td').value.trim() || 'Topik baru — ayo gabung!';
+  if (!name) { alert('Isi nama topik!'); return; }
   
-  db.ref('topics/'+topicId).once('value').then(function(snap){
-    var topic=snap.val();
-    if(!topic){t('Topik tidak ditemukan');return}
-    T={id:topicId,emoji:topic.emoji,name:topic.name,desc:topic.desc,color:topic.color};
-    document.getElementById('ct').textContent=(topic.emoji||'💬')+' '+topic.name;
-    document.getElementById('cmdiv').innerHTML='';
-    document.getElementById('ob').innerHTML='<span class="none">memuat...</span>';
-    document.getElementById('ti').textContent='';
-    ss('chatScreen');
-    
-    mp=db.ref('topic_presence/'+topicId+'/'+U.id);
-    mp.set({name:U.name,color:U.color,timestamp:firebase.database.ServerValue.TIMESTAMP});
-    mp.onDisconnect().remove();
-    
-    pl=function(snap){ro(snap.val()||{})};
-    db.ref('topic_presence/'+topicId).on('value',pl);
-    
-    ml=function(snap){rm(snap.val(),snap.key);sd()};
-    db.ref('messages/'+topicId).orderByChild('timestamp').limitToLast(50).on('child_added',ml);
-    
-    tl=function(snap){
-      var typers=snap.val()||{};
-      var names=Object.keys(typers).filter(function(uid){return uid!==U.id&&typers[uid]}).map(function(uid){return typers[uid].name});
-      document.getElementById('ti').textContent=names.length>0?'✍️ '+names.slice(0,2).join(', ')+(names.length>2?' & '+(names.length-2)+' lainnya':'')+' mengetik...':'';
-    };
-    db.ref('typing/'+topicId).on('value',tl);
-    
-    setInterval(function(){if(T&&mp)mp.update({timestamp:firebase.database.ServerValue.TIMESTAMP})},30000);
-    document.getElementById('mi').focus();
+  var id = name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-'+Date.now().toString(36);
+  var color = '#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
+  
+  db.ref('topics/'+id).set({
+    emoji:emoji, name:name, desc:desc, color:color,
+    createdAt: firebase.database.ServerValue.TIMESTAMP
+  }).then(function(){
+    cm('nm');
+    alert('✅ Topik dibuat!');
+    loadTopics();
+  }).catch(function(e){
+    alert('Gagal: '+e.message);
   });
 }
 
-function ro(users){
-  var bar=document.getElementById('ob');
-  var cutoff=Date.now()-60000;
-  var active=Object.keys(users).filter(function(uid){return users[uid].timestamp>cutoff}).map(function(uid){return users[uid]});
-  if(active.length===0){bar.innerHTML='<span class="none">Kamu yang pertama di sini! 🎉</span>';return}
-  bar.innerHTML=active.map(function(u){return'<div class="ou" title="'+u.name+'"><div class="od" style="background:'+(u.color||'#999')+'">'+(u.name||'?')[0].toUpperCase()+'</div><span>'+(u.name||'?')+'</span></div>'}).join('');
+// ═══════════════════════════════════════
+// 6. CHAT
+// ═══════════════════════════════════════
+function openTopic(topicId){
+  if (!U || !db) return;
+  
+  // Clean previous listeners
+  if (msgListener) { db.ref('messages/'+(T?T.id:'')).off('child_added', msgListener); msgListener = null; }
+  if (presenceListener) { db.ref('topic_presence/'+(T?T.id:'')).off('value', presenceListener); presenceListener = null; }
+  if (myPresence) { myPresence.remove(); myPresence = null; }
+  
+  db.ref('topics/'+topicId).once('value').then(function(snap){
+    var topic = snap.val();
+    if (!topic) { alert('Topik tidak ditemukan'); return; }
+    
+    T = {id:topicId, name:topic.name, emoji:topic.emoji, color:topic.color};
+    document.getElementById('ct').textContent = (topic.emoji||'💬')+' '+topic.name;
+    document.getElementById('cmd').innerHTML = '';
+    ss('chatScreen');
+    
+    // My presence
+    myPresence = db.ref('topic_presence/'+topicId+'/'+U.id);
+    myPresence.set({
+      name:U.name, color:U.color,
+      timestamp: firebase.database.ServerValue.TIMESTAMP
+    });
+    myPresence.onDisconnect().remove();
+    
+    // Listen messages
+    msgListener = function(snap){ addMessage(snap.val(), snap.key); };
+    db.ref('messages/'+topicId).orderByChild('timestamp').limitToLast(50).on('child_added', msgListener);
+    
+    document.getElementById('mi').focus();
+  }).catch(function(e){
+    alert('Gagal buka topik: '+e.message);
+  });
 }
 
-function rm(msg,msgId){
-  if(!U||!T)return;
-  var container=document.getElementById('cmdiv');
-  if(document.getElementById('m-'+msgId))return;
-  if(msg.type==='system'){
-    var d=document.createElement('div');d.className='sys';d.id='m-'+msgId;d.textContent=msg.text||'';container.appendChild(d);return;
+function addMessage(msg, msgId){
+  if (!U || !T) return;
+  var container = document.getElementById('cmd');
+  if (document.getElementById('m-'+msgId)) return;
+  
+  if (msg.type === 'system'){
+    var d = document.createElement('div');
+    d.className = 'sys'; d.id = 'm-'+msgId;
+    d.textContent = msg.text || '';
+    container.appendChild(d);
+    scrollDown();
+    return;
   }
-  var isMe=msg.senderId===U.id;
-  var text=(msg.text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  var isEmoji=/^[\uD800-\uDFFF\u2600-\u27BF\u200D\s]+$/.test(msg.text||'')&&(msg.text||'').trim().length<=8;
-  var d=document.createElement('div');
-  d.className='msg '+(isMe?'me':'other');d.id='m-'+msgId;
-  d.innerHTML=(!isMe?'<div class="avt" style="background:'+(msg.senderColor||'#999')+'">'+(msg.senderName||'?')[0].toUpperCase()+'</div>':'')+
-    '<div class="bbl">'+(!isMe?'<div class="sdr">'+msg.senderName+'</div>':'')+(isEmoji?'<div class="bem">'+msg.text+'</div>':text)+'<div class="tm">'+(msg.time||'')+'</div></div>'+
-    (isMe?'<div class="avt" style="background:'+U.color+'">'+U.initial+'</div>':'');
+  
+  var isMe = msg.senderId === U.id;
+  var text = (msg.text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  var isEmoji = /^[\uD800-\uDFFF\u2600-\u27BF\u200D\s]+$/.test(msg.text||'') && (msg.text||'').trim().length <= 8;
+  
+  var d = document.createElement('div');
+  d.className = 'msg '+(isMe?'me':'other');
+  d.id = 'm-'+msgId;
+  
+  var avtHtml = '<div class="avt" style="background:'+(isMe?U.color:(msg.senderColor||'#999'))+'">'+(isMe?U.initial:(msg.senderName||'?')[0].toUpperCase())+'</div>';
+  var senderHtml = !isMe ? '<div class="sdr">'+(msg.senderName||'Anon')+'</div>' : '';
+  var contentHtml = isEmoji ? '<div class="bem">'+msg.text+'</div>' : text;
+  var timeHtml = '<div class="tm">'+(msg.time||'')+'</div>';
+  
+  if (isMe) {
+    d.innerHTML = '<div class="bbl">'+contentHtml+timeHtml+'</div>'+avtHtml;
+  } else {
+    d.innerHTML = avtHtml+'<div class="bbl">'+senderHtml+contentHtml+timeHtml+'</div>';
+  }
+  
   container.appendChild(d);
+  scrollDown();
 }
 
 function send(){
-  if(!T||!U)return;
-  var input=document.getElementById('mi');var text=input.value.trim();
-  if(!text)return;
-  db.ref('messages/'+T.id).push({type:'message',senderId:U.id,senderName:U.name,senderColor:U.color,text:text,time:ts(),timestamp:firebase.database.ServerValue.TIMESTAMP}).then(function(){console.log('✅ sent')}).catch(function(e){t('Gagal: '+e.message)});
-  db.ref('typing/'+T.id+'/'+U.id).set(false);
-  input.value='';document.getElementById('sb').disabled=true;
+  if (!T || !U || !db) return;
+  var input = document.getElementById('mi');
+  var text = input.value.trim();
+  if (!text) return;
+  
+  db.ref('messages/'+T.id).push({
+    type:'message',
+    senderId:U.id,
+    senderName:U.name,
+    senderColor:U.color,
+    text:text,
+    time:ts(),
+    timestamp:firebase.database.ServerValue.TIMESTAMP
+  }).catch(function(e){
+    alert('Gagal kirim: '+e.message);
+  });
+  
+  input.value = '';
+  document.getElementById('sb').disabled = true;
 }
 
-function hk(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}
-  setTimeout(function(){var inp=document.getElementById('mi');document.getElementById('sb').disabled=!inp.value.trim();if(T)db.ref('typing/'+T.id+'/'+U.id).set(inp.value.trim()?{name:U.name,timestamp:firebase.database.ServerValue.TIMESTAMP}:false)},50)}
-function ar(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px'}
-function sd(){var c=document.getElementById('cmdiv');var nb=c.scrollHeight-c.scrollTop-c.clientHeight<200;if(nb)setTimeout(function(){c.scrollTop=c.scrollHeight},60)}
+function hk(e){
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  setTimeout(function(){
+    document.getElementById('sb').disabled = !document.getElementById('mi').value.trim();
+  }, 50);
+}
+
+function scrollDown(){
+  var c = document.getElementById('cmd');
+  setTimeout(function(){ c.scrollTop = c.scrollHeight; }, 100);
+}
 
 function gt(){
-  if(ml){db.ref('messages/'+(T?T.id:'')).off('child_added',ml);ml=null}
-  if(pl){db.ref('topic_presence/'+(T?T.id:'')).off('value',pl);pl=null}
-  if(tl){db.ref('typing/'+(T?T.id:'')).off('value',tl);tl=null}
-  if(mp){mp.remove();mp=null}
-  T=null;ss('topicsScreen');lt();
+  if (msgListener) { db.ref('messages/'+(T?T.id:'')).off('child_added', msgListener); msgListener = null; }
+  if (myPresence) { myPresence.remove(); myPresence = null; }
+  T = null;
+  ss('topicsScreen');
+  loadTopics();
 }
 
-function su(){
-  if(!T)return;
-  db.ref('topic_presence/'+T.id).once('value').then(function(snap){
-    var users=snap.val()||{};var cutoff=Date.now()-60000;
-    var active=Object.keys(users).filter(function(uid){return users[uid].timestamp>cutoff}).map(function(uid){return {uid:uid,name:users[uid].name,color:users[uid].color}});
-    document.getElementById('ul').innerHTML=active.length>0?active.map(function(u){return'<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #eee"><div style="width:36px;height:36px;border-radius:50%;background:'+u.color+';display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">'+u.name[0].toUpperCase()+'</div><span style="font-weight:600">'+u.name+'</span>'+(u.uid===U.id?'<span style="font-size:10px;color:var(--sub);margin-left:auto">(kamu)</span>':'<span style="font-size:10px;color:var(--on);margin-left:auto">🟢 online</span>')+'</div>'}).join(''):'<p style="color:var(--sub);font-size:13px">Ga ada yang online</p>';
-    document.getElementById('um').classList.add('on');
-  });
-}
+// ═══════════════════════════════════════
+// 7. INIT
+// ═══════════════════════════════════════
+document.getElementById('mi').addEventListener('input', function(){
+  document.getElementById('sb').disabled = !this.value.trim();
+});
 
-document.getElementById('mi').addEventListener('input',function(){document.getElementById('sb').disabled=!this.value.trim()});
-document.getElementById('ui').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
+document.getElementById('ui').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') login();
+});
 
-})(); // END IIFE
+console.log('✅ CurhatYuk ready — waiting for Firebase...');
 </script>
 </body>
 </html>
